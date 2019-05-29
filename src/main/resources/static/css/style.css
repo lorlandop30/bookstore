@@ -1,0 +1,63 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.navbar {
+    margin-bottom: 20px;
+
+}
+
+.navbar-brand{
+    color: white !important;
+}
+.nav-link {
+    color: white !important;
+}
+
+.carousel-caption{
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    z-index: 40;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+.ex{
+    border: 4px solid green;
+}
+
+.img-fluid{
+    border: 2px solid green;
+}
+.featured{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.feat{
+    text-align: center;
+}
+
+
+.col-xs-1{
+    margin:23px;
+}
+.fix{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.last{
+    background-color: #2ea546;
+}
+
+
+hr
+{
+    color: red;
+    background: white;
+    border: 0;
+    height: 1px;
+    margin: 0px;
+}
+
