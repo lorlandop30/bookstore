@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Geek Text</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body background="/img/wood.jpg">
+
+<div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand disabled" href="/">Geek Text</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Search form -->
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
+                </button>
+            </form>
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Shopping Cart <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <h2 class="section-headline" > <span th:text="${#strings.toUpperCase{user.username}}"></span></h2>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Logout <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+
+<div class="container login">
+
+    <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist" >
+        <li class="nav-item item1">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+               aria-controls="pills-home" aria-selected="true" >Login</a>
+        </li>
+        <li class="nav-item item2">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+               aria-controls="pills-profile" aria-selected="false">Create New Account</a>
+        </li>
+        <li class="nav-item item3">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+               aria-controls="pills-contact" aria-selected="false">Forget Password</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="row">
+                <div class="col-sm-4">
+                    <form>
+                        <div class="form-group">
+                            <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username">
+                            <div class="label tip-email" style="color: white">Username</div>
+                        </div>
+                        <div class="form-group">
+                            <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password">
+                            <div class="label tip-email" style="color: white">Password</div>
+                        </div>
+
+                        <button type="submit"  class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="row">
+                <div class="col-sm-4">
+                    <form>
+                        <div class="form-group">
+                            <input required type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Add email">
+                            <div class="label tip-email" style="color: white">Email</div>
+                        </div>
+                        <div class="form-group">
+                            <input required type="text" class="form-control" id="exampleInputPassword12" placeholder="Add Username">
+                            <div class="label tip-email" style="color: white">Username</div>
+                        </div>
+                        <button type="submit" class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <form>
+                        <div class="form-group">
+                            <input required type="email" class="form-control" id="exampleInputEmail23" aria-describedby="emailHelp" placeholder="Enter your email">
+                            <div class="label tip-email" style="color: white">We will send you an email to recover your password.</div>
+                        </div>
+                        <button type="submit" class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container fixed-bottom">
+    <div class="row last">
+        <div class="col-sm-1  "></div>
+        <div class="col-sm-4 address ">
+            <p class="text-white">Address: 5200 nw 7st,Miami,FL 33012</p>
+        </div>
+
+        <div class="col-sm-3 phone ">
+            <p class="text-white">Phone Number: (+1) 305-234-6754</p>
+
+        </div>
+
+        <div class="col-sm-4 days ">
+            <p class="text-white">Open: Monday-Friday (8:00 am- 5:00 pm)</p>
+
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+</body>
+</html>

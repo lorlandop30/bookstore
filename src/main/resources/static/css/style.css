@@ -15,6 +15,7 @@ body {
     color: white !important;
 }
 
+
 .carousel-caption{
     position: absolute;
     top: 10%;
@@ -61,3 +62,36 @@ hr
     margin: 0px;
 }
 
+
+/*login-style*/
+
+.login{
+    padding-top: 200px;
+    padding-bottom: 300px;
+}
+
+
+.nav-pills .item1 a.active{background-color: #2ea546}
+.nav-pills .item1 a:hover{background-color: darkgreen}
+
+.nav-pills .item2 a.active{background-color: #2ea546}
+.nav-pills .item2 a:hover{background-color: darkgreen}
+
+.nav-pills .item3 a.active{background-color: #2ea546}
+.nav-pills .item3 a:hover{background-color:darkgreen}
+
+.submit{
+    background-color: #2ea546;
+    color:white;
+}
+
+.tip-email{
+    font-size: 12px;
+}
+.submit:hover{
+    color: white;
+    background-color: darkgreen}
+
+.fixed-bottom{
+    margin-bottom: 20px;
+}

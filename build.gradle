@@ -14,11 +14,28 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	
+	//frontend
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	//bootstrap
+	compile group: 'org.webjars', name: 'bootstrap', version: '4.3.1'
+	compile group: 'org.webjars', name: 'jquery', version: '3.3.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.1.5.RELEASE', ext: 'pom'
-	compile group: 'org.webjars', name: 'bootstrap', version: '4.3.1'
-    compile group: 'org.webjars', name: 'jquery', version: '3.3.1'
+	
+	//security
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.5.RELEASE'
+
+	//to access relational data
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.5.RELEASE'
+
+	//how to define the mapping
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.5.RELEASE'
+
+	//database
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+
 }
