@@ -34,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/js/**",
             "/img/**",
             "/",
-            "/account"
+            "/account",
+            "/rating"
 
     };
 
