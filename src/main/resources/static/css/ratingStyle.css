@@ -1,0 +1,24 @@
+
+#rateImg{
+    width: 10rem;
+    height: auto;
+}
+
+#writeReview h1{
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#rating_comments i{
+    font-size: 1.3rem;
+    color: gold;
+}
+
+.nameChoice{
+    margin-left: 2rem;
+}
+
+.reviewButtons{
+    float: right;
+    margin-right: 0.5rem;
+}
