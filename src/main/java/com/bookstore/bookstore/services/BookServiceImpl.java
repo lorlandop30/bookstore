@@ -1,9 +1,11 @@
 package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BookServiceImpl implements BookService
 {
     @Override
