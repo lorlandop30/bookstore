@@ -4,6 +4,11 @@ import javax.persistence.*;
 
 @Entity
 public class Book implements Comparable <Book> {
+    @Override
+    public int compareTo(Book o) {
+        return 0;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
@@ -19,19 +24,14 @@ public class Book implements Comparable <Book> {
 
     private String title;
     private String author;
-    private String genre;
-    private String iSBN;
-    private String publisher;
-    private int yearofpublication;
 
-    public Book(String title, String author, String genre, String iSBN, String publisher, int yearofpublication) {
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
-        this.iSBN = iSBN;
-        this.publisher = publisher;
-        this.yearofpublication = yearofpublication;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="genre_id")
+    private Genre genre;
+    private double price;
+    private boolean topseller;
+    private double rating;
+    private int yearofpublication;
 
     public String getTitle() {
         return title;
@@ -49,28 +49,36 @@ public class Book implements Comparable <Book> {
         this.author = author;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 
-    public String getiSBN() {
-        return iSBN;
+    public double getPrice() {
+        return price;
     }
 
-    public void setiSBN(String iSBN) {
-        this.iSBN = iSBN;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public boolean isTopseller() {
+        return topseller;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setTopseller(boolean topseller) {
+        this.topseller = topseller;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public int getYearofpublication() {
@@ -81,14 +89,17 @@ public class Book implements Comparable <Book> {
         this.yearofpublication = yearofpublication;
     }
 
-    public Book() {
+    public Book(String title, String author, Genre genre, double price, boolean topseller, double rating, int yearofpublication) {
+
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.price = price;
+        this.topseller = topseller;
+        this.rating = rating;
+        this.yearofpublication = yearofpublication;
     }
 
-    @Override
-    public int compareTo(Book o) {
-        if (o == null){
-            return -1;
-        }
-        return this.getTitle().compareTo(o.getTitle());
+    public Book() {
     }
 }
