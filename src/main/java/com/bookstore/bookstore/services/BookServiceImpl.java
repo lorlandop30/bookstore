@@ -4,6 +4,9 @@ import com.bookstore.bookstore.models.Book;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class BookServiceImpl implements BookService
 {
     @Override
