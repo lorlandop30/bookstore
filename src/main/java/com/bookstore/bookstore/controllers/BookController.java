@@ -21,11 +21,12 @@ public class BookController {
     @Autowired
     private GenreService genreService;
 
-    @RequestMapping("/showGenres")
+    @RequestMapping("/genreBrowser")
     public String showGenres(Model model){
         List<Genre> genres = genreService.listGenres();
         System.out.println(genres);
-        return null;
+        model.addAttribute("genres", genres);
+        return "genreBrowser";
     }
 
     @RequestMapping("/searchTitle")

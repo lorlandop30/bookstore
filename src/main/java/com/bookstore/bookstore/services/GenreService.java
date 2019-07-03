@@ -1,8 +1,8 @@
 package com.bookstore.bookstore.services;
 
-import com.bookstore.bookstore.models.Genre;
+        import com.bookstore.bookstore.models.Genre;
 
-import java.util.List;
+        import java.util.List;
 
 public interface GenreService {
     List<Genre> listGenres();

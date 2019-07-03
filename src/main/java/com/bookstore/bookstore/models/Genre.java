@@ -15,6 +15,14 @@ public class Genre {
         this.ID = ID;
     }
 
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public Genre() {
 
     }
