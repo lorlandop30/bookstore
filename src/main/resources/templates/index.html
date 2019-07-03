@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,19 +45,23 @@
             <!-- Search form -->
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
-                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search</button>
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
+                </button>
             </form>
-            <ul class="navbar-nav mr-auto">
-            </ul>
+            <ul class="navbar-nav mr-auto"></ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span class="sr-only">(current)</span></a>
+                <li>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                            class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li sec:authorize="isAnonymous()">
                     <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Logout <span class="sr-only">(current)</span></a>
+                <li sec:authorize="isAuthenticated()">
+                    <a class="nav-link"  th:href="@{/MyProfile}">My Account <span class="sr-only">(current)</span></a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>

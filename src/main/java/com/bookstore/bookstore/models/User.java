@@ -1,7 +1,7 @@
 package com.bookstore.bookstore.models;
 
 import com.bookstore.bookstore.security.Authority;
-import com.bookstore.bookstore.security.UserRoles;
+import com.bookstore.bookstore.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,11 +27,11 @@ public class User implements UserDetails {
     private String email;
     private String phone;
 
-    private Boolean enable;
+    private boolean enabled=true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<UserRoles> userRoles = new HashSet<>();
+    private Set<UserRole> userRoles = new HashSet<>();
 
 
     public User() {
@@ -46,12 +46,8 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public Boolean getEnable() {
-        return enable;
-    }
-
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -66,9 +62,10 @@ public class User implements UserDetails {
         return username;
     }
 
+    //important that return true, if not will be expired for the user
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
 
@@ -76,11 +73,11 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public Set<UserRoles> getUserRoles() {
+    public Set<UserRole> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(Set<UserRoles> userRoles) {
+    public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 
@@ -137,7 +134,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

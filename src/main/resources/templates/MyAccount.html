@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Geek Text</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+</head>
+
+<body background="/img/book_img18.jpg">
+
+<div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand disabled" href="/">Geek Text</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Search form -->
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
+                </button>
+            </form>
+            <ul class="navbar-nav mr-auto">
+            </ul>
+
+            <div >
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a class="nav-link"  th:href="@{/MyProfile}">My Account <span class="sr-only">(current)</span></a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+
+<div class="container login">
+
+    <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist" >
+        <li class="nav-item item1">
+            <a class="nav-link" th:classappend="${classActiveLogin}? 'active'" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+               aria-controls="pills-home" aria-selected="true" >Login</a>
+        </li>
+        <li class="nav-item item2"  >
+            <a class="nav-link "  th:classappend="${classActiveNewAccount}? 'active'"  id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+               aria-controls="pills-profile" aria-selected="false">Create New Account</a>
+        </li>
+        <li class="nav-item item3 "   >
+            <a class="nav-link" th:classappend="${classActiveForgetPassword}? 'active'"  id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+               aria-controls="pills-contact" aria-selected="false">Forget Password</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent" >
+
+        <div class="tab-pane fade show"  th:classappend="${classActiveLogin}? ' in active'"   id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"  >
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div th:if="${param.error != null}" > <p th:title="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">Invalid username or password.</p></div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-group">
+                            <input required type="text" class="form-control" id="username1" name="username" aria-describedby="emailHelp" placeholder="Enter Username">
+                            <div class="label tip-email" style="color: white">Username</div>
+                        </div>
+                        <div class="form-group">
+                            <input required type="password" class="form-control" id="exampleInputPassword1"  name="password" placeholder="Enter Password">
+                            <div class="label tip-email" style="color: white">Password</div>
+                        </div>
+
+                        <button type="submit"  class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade show "  th:classappend="${classActiveNewAccount}? ' in active'"   id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"  >
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="alert alert-info" th:if="${emailSent}">
+                        An email was sent. Please validate the email address</div>
+                    <form th:action="@{/newUser}" method="post">
+                        <div class="form-group">
+                            <label for="email"></label>&nbsp;<span style="color: red" th:if="${emailExists}">Email already exists</span>
+                            <input required type="text" class="form-control" id="email"  name="email" placeholder="Add email">
+                            <div class="label tip-email" style="color: white">Email</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Username"></label>&nbsp;<span style="color: red" th:if="${usernameExists}">Username already exists</span>
+                            <input required type="text" class="form-control" id="Username"  name="Username" placeholder="Add Username">
+                            <div class="label tip-email" style="color: white">Username</div>
+                        </div>
+                        <button type="submit" class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade show "  th:classappend="${classActiveForgetPassword}? 'in active'"  id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" >
+
+            <div class="row">
+                <div class="col-sm-4 pb-4 mb-5">
+                    <div th:if="${emailNotExist}" class="alert alert-danger">Email doesn't exist.</div>
+                    <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email sent.</div>
+                    <form th:action="@{/forgetPassword}" method="post">
+                        <div class="form-group">
+                            <input required type="email" class="form-control" id="exampleInputEmail23" name="email" aria-describedby="emailHelp" placeholder="Enter your email">
+                            <div class="label tip-email" style="color: white">We will send you an email to recover your password.</div>
+                        </div>
+                        <button type="submit" class="btn submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container social_media">
+    <a href=""><i class="fab fa-facebook-f px-2"></i></a>
+    <a href=""><i class="fab fa-twitter"></i></a>
+    <a href=""><i class="fab fa-instagram px-2"></i></a>
+    <a href=""><i class="fab fa-linkedin-in"></i></a>
+</div>
+
+<div class="container fix">
+    <div class="row last border-top border-bottom">
+        <div class="col-sm-1  "></div>
+        <div class="col-sm-4 address border-right p-3">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>5200 nw 7st,Miami,FL 33012</p>
+        </div>
+
+        <div class="col-sm-3 phone p-3">
+            <i class="fas fa-mobile-alt"></i>
+            <p>(+1) 305-234-6754</p>
+
+        </div>
+
+        <div class="col-sm-4 days border-left p-3">
+            <i class="far fa-clock"></i>
+            <p>Monday-Friday (8:00 am- 5:00 pm)</p>
+
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+</body>
+</html>
