@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-	
+
 	//frontend
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
@@ -25,9 +25,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.1.5.RELEASE', ext: 'pom'
-	
+
 	//security
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.5.RELEASE'
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.4.RELEASE'
+
+	compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.11.RELEASE'
 
 	//to access relational data
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.5.RELEASE'
@@ -37,5 +40,11 @@ dependencies {
 
 	//database
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+
+	// email
+	compile group: 'javax.mail', name: 'mail', version: '1.4'
+	compile group: 'org.springframework', name: 'spring-context-support', version: '5.1.8.RELEASE'
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '2.1.6.RELEASE'
 
 }
