@@ -42,12 +42,16 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <a class="nav-link" href="/bookshelf">Books<span
+                    class="sr-only">(current)</span></a>
             <!-- Search form -->
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
                 <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
                 </button>
             </form>
+
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -58,7 +62,7 @@
                     <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
-                    <a class="nav-link"  th:href="@{/MyProfile}">My Account <span class="sr-only">(current)</span></a>
+                    <a class="nav-link"   href="/MyProfile">My Account <span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
