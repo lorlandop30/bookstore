@@ -1,6 +1,9 @@
 package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.User;
+import com.bookstore.bookstore.models.UserBilling;
+import com.bookstore.bookstore.models.UserPayment;
+import com.bookstore.bookstore.models.UserShipping;
 import com.bookstore.bookstore.security.PasswordResetToken;
 import com.bookstore.bookstore.security.UserRole;
 
@@ -22,4 +25,11 @@ public interface UserService {
     User save(User user);
 
     void createPasswordResetTokenForUser(final User user, final String token);
+    void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user);
+
+    void setUserDefaultPayment(Long userPaymentId, User user);
+
+    void updateUserShipping(UserShipping userShipping, User user);
+
+    void setUserDefaultShipping(Long userShippingId, User user);
 }
