@@ -71,6 +71,16 @@ public class BookController {
     public List<Book> searchTitle(@RequestParam("title") String title){
         return null;
     }
+    @RequestMapping("/genre/{genreId}")
+    public String listByGenre(@PathVariable(value = "genreId")long genreId, Model model){
+
+        Genre genre = new Genre();
+        genre.setID(genreId);
+        List<Book> books = bookRepository.findByGenre(genre);
+        System.out.println(books);
+        model.addAttribute("bookList", books);
+        return "bookshelf";
+    }
 }
 
 //
