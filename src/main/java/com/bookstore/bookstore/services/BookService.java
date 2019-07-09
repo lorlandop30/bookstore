@@ -10,5 +10,4 @@ public interface BookService {
     Book findBookById(Long id);
         List<Book> searchTitle(String title);
         List<Book> searchAuthor(String author);
-        List<Book> searchyearofpublication(int yearofpublication);
 }

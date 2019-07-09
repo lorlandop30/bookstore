@@ -30,10 +30,4 @@ public class BookServiceImpl implements BookService{
         return null;
     }
 
-
-    @Override
-    public List<Book> searchyearofpublication(int yearofpublication) {
-        return null;
-    }
-
 }
