@@ -50,6 +50,15 @@ public class BookServiceImpl implements BookService{
         return reviews.size();
     }
 
+    @Override
+    public List<Book> searchTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public List<Book> searchAuthor(String author) {
+        return null;
+    }
 
 
 }
