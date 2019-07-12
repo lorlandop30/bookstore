@@ -189,3 +189,12 @@ button.btn.btn-dark:hover {
 .bookshelf{
     padding-bottom: 50px;
 }
+
+.book-item{
+    display: inline;
+    float: left;
+}
+
+.card-text{
+    display: block;
+}
