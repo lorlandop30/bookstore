@@ -44,6 +44,13 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
                 <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
                 </button>
+                <select name="sort">
+                    <option value="title">title</option>
+                    <option value="author">author</option>
+                    <option value="price">price</option>
+                    <option value="rating">rating</option>
+                    <option value="date">date</option>
+                </select>
             </form>
             <ul class="navbar-nav mr-auto">
             </ul>
@@ -78,7 +85,6 @@
                     <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Books'"></span>
                 </h2>
             </h2>
-
 
     <div class="row" style="margin-top: 60px;">
         <div class="col-xs-9 col-xs-offset-3">

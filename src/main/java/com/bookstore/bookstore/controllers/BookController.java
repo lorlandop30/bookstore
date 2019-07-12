@@ -36,9 +36,6 @@ public class BookController {
     private BookRepository bookRepository;
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private GenreService genreService;
 
     @Autowired

@@ -70,8 +70,26 @@ public class IndexController {
     }
 
     @RequestMapping("/bookshelf")
-    public String bookshelf(Model model) {
-        List<Book> bookList = bookService.findAll();
+    public String bookshelf(@RequestParam(value = "sort", required = false) String sort, Model model) {
+        List<Book> bookList = null;
+        if (sort == null || "".equals(sort)){
+           bookList = bookService.findAll();
+        }
+        else if ("title".equalsIgnoreCase(sort)){
+            bookList = bookService.findAllByOrderByTitleAsc();
+        }
+        else if ("author".equalsIgnoreCase(sort)){
+            bookList = bookService.findAllByOrderByAuthorAsc();
+        }
+        else if ("date".equalsIgnoreCase(sort)){
+            bookList = bookService.findAllByOrderByPublicationDateAsc();
+        }
+        else if ("rating".equalsIgnoreCase(sort)){
+            bookList = bookService.findAllByOrderByRatingAsc();
+        }
+        else if ("price".equalsIgnoreCase(sort)){
+            bookList = bookService.findAllByOrderByPriceAsc();
+        }
         model.addAttribute("bookList", bookList);
 
         return "bookshelf";

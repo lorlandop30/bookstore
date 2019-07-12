@@ -20,6 +20,32 @@ public class BookServiceImpl implements BookService{
     public Book findBookById(Long id) {
         return bookRepository.findBookById(id);
     }
+
+    @Override
+    public List<Book> findAllByOrderByTitleAsc() {
+        return bookRepository.findAllByOrderByTitleAsc();
+    }
+
+    @Override
+    public List<Book> findAllByOrderByAuthorAsc() {
+        return bookRepository.findAllByOrderByAuthorAsc();
+    }
+
+    @Override
+    public List<Book> findAllByOrderByPublicationDateAsc() {
+        return bookRepository.findAllByOrderByPublicationDateAsc();
+    }
+
+    @Override
+    public List<Book> findAllByOrderByRatingAsc() {
+        return bookRepository.findAllByOrderByRatingAsc();
+    }
+
+    @Override
+    public List<Book> findAllByOrderByPriceAsc() {
+        return bookRepository.findAllByOrderByPriceAsc();
+    }
+
     @Override
     public List<Book> searchTitle(String title) {
         return null;
