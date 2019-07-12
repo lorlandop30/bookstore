@@ -1,23 +1,38 @@
 package com.bookstore.bookstore.models;
 
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-public class Book {
+public class Book implements Comparable <Book> {
+    @Override
+    public int compareTo(Book o) {
+        return 0;
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private String title;
     private String author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="genre_id")
+    private Genre genre;
+    private double price;
+    private boolean topseller;
+    private double rating;
     private String publisher;
     private String publicationDate;
     private String language;
@@ -56,14 +71,6 @@ public class Book {
 //
 //    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -78,6 +85,41 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isTopseller() {
+        return topseller;
+    }
+
+    public void setTopseller(boolean topseller) {
+        this.topseller = topseller;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public Book() {
     }
 
     public String getPublisher() {
@@ -191,6 +233,4 @@ public class Book {
     public void setBookImage(MultipartFile bookImage) {
         this.bookImage = bookImage;
     }
-
-
 }
