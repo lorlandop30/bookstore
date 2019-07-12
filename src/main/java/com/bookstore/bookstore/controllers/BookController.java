@@ -1,10 +1,14 @@
 package com.bookstore.bookstore.controllers;
 
 import com.bookstore.bookstore.models.Book;
+import com.bookstore.bookstore.models.Category;
 import com.bookstore.bookstore.models.Genre;
 import com.bookstore.bookstore.repositories.BookRepository;
+import com.bookstore.bookstore.repositories.CategoryRepository;
+import com.bookstore.bookstore.repositories.GenreRepository;
 import com.bookstore.bookstore.services.BookService;
 import com.bookstore.bookstore.services.BookServiceImpl;
+import com.bookstore.bookstore.services.CategoryService;
 import com.bookstore.bookstore.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +20,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/book")
 public class BookController {
 
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -31,6 +40,9 @@ public class BookController {
 
     @Autowired
     private GenreService genreService;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addBook(Model model) {
@@ -60,19 +72,28 @@ public class BookController {
     }
 
     @RequestMapping("/genreBrowser")
-    public String showGenres(Model model){
+    public String showGenres(Model model) {
         List<Genre> genres = genreService.listGenres();
         System.out.println(genres);
         model.addAttribute("genres", genres);
         return "genreBrowser";
     }
 
+    @RequestMapping("/categoryBrowser")
+    public String showCategories(Model model) {
+        List<Category> categories = categoryService.listCategories();
+        System.out.println(categories);
+        model.addAttribute("categories", categories);
+        return "categoryBrowser";
+    }
+
     @RequestMapping("/searchTitle")
-    public List<Book> searchTitle(@RequestParam("title") String title){
+    public List<Book> searchTitle(@RequestParam("title") String title) {
         return null;
     }
+
     @RequestMapping("/genre/{genreId}")
-    public String listByGenre(@PathVariable(value = "genreId")long genreId, Model model){
+    public String listByGenre(@PathVariable(value = "genreId") long genreId, Model model) {
 
         Genre genre = new Genre();
         genre.setID(genreId);
@@ -81,8 +102,21 @@ public class BookController {
         model.addAttribute("bookList", books);
         return "bookshelf";
     }
-}
 
+    @RequestMapping("/category/{categoryId}")
+    public String listByCategory(@PathVariable(value = "categoryId") long categoryId, Model model) {
+        Category category = new Category();
+        category.setId(categoryId);
+        List<Genre> genres = genreRepository.findByCategory(category);
+        Set<Book> books = new HashSet<>();
+        for (Genre genre: genres) {
+            List<Book> bks = bookRepository.findByGenre(genre);
+            books.addAll(bks);
+        }
+        model.addAttribute("bookList", books);
+        return "bookshelf";
+    }
+}
 //
 //    private BookRepository bookRepository;
 //
