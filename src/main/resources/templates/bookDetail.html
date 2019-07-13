@@ -158,10 +158,10 @@
                 <p>This book has not been rated yet</p>
             </div>
 
-            <div class="container" th:if="${Reviews}"  id="average">
+            <div class="container" id="average">
                 <div class="row">
                     <div class="col"></div>
-                    <div class="col">
+                    <div class="col" th:if="${Reviews}">
                         <div class="jumbotron p-2 mr-1">
                             <div class="container">
                                 <h4>Average Review</h4>

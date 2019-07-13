@@ -67,19 +67,13 @@ public class RatingController {
         Book book = bookService.findBookById(id);
 
         model.addAttribute("user", user);
-
+        model.addAttribute("book", book);
         review.setUsername(showname);
         review.setRating(score);
 
         reviewService.addReview(review, user, book);
 
-        return "index";         //THIS NEEDS TO BE CHANGED TO THE BOOK DETAILS PAGE!!!!!
-    }
-
-    @RequestMapping (value="/showReview")
-    public String showReviews() {
-
-        return "showReview";
+        return "index";
     }
 
 

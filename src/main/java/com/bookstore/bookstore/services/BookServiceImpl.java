@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService{
         if(numberOfReviews==0.0){
             return 0.0;
         } else{
-            return totalRating/(numberOfReviews);
+            return Math.round(totalRating/(numberOfReviews)*100)/100;
         }
     }
 
