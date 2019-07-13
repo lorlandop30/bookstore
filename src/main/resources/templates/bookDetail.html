@@ -165,14 +165,16 @@
                         <div class="jumbotron p-2 mr-1">
                             <div class="container">
                                 <h4>Average Review</h4>
-                                <p class="lead mb-0"><span th:value="${averageRating}" th:text="${averageRating}" ></span></p>
+                                <p class="lead mb-0"><span class="averageRating" th:value="${averageRating}" th:text="${averageRating}" ></span></p>
 
-                                <!-- General Rating stars-->
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
+                                <span id="grstars">
+                                    <!-- General Rating stars-->
+                                    <i class="far fa-star userStar bookDetail_GeneralStars"></i>
+                                    <i class="far fa-star userStar bookDetail_GeneralStars"></i>
+                                    <i class="far fa-star userStar bookDetail_GeneralStars"></i>
+                                    <i class="far fa-star userStar bookDetail_GeneralStars"></i>
+                                    <i class="far fa-star userStar bookDetail_GeneralStars"></i>
+                                </span>
 
                                 <p class="my-2"><span th:value="${numberOfReviews}" th:text="${numberOfReviews}"></span> Reviews</p>
                             </div>
@@ -204,15 +206,7 @@
                             </div>
                             <div class="row mb-4">
                                 <!-- User Rating stars-->
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-                                <i class="fas fa-star userStar"></i>
-
-                                <!--THIS PART WILL BE IMPLEMENTED LATER!!-->
-                                <!--<p><span th:text="${review.rating}"></span></p>-->
-
+                                <p><span th:text="${review.rating}"></span></p>
                             </div>
                         </div>
                         <div class="col col-sm-8">
@@ -255,6 +249,29 @@
             </div>
         </div>
     </div>
+
+    <script src="/js/rating.js"></script>
+
+<!--    Thymeleaf Javascript Inline-->
+
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+
+        var rating = /*[[${averageRating}]]*/ 'Rating';
+        var bookDetail_Generalstars = document.querySelectorAll(".bookDetail_GeneralStars");
+
+        bookDetail_Generalstars[rating-1].classList.remove("far");
+        bookDetail_Generalstars[rating-1].classList.add("fas");
+        $(".bookDetail_GeneralStars.fas").prevAll().removeClass("far");
+        $(".bookDetail_GeneralStars.fas").prevAll().addClass("fas");
+
+        /*]]>*/
+    </script>
+
+
+
+
 
 </body>
 </html>

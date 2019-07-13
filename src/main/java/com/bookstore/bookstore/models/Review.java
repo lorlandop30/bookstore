@@ -15,7 +15,7 @@ public class Review {
     private Long id;
     private int bookisbn; //foreign key from Book table
     private boolean shownickname;
-    private int rating; //five stars rating (1-5)
+    private double rating; //five stars rating (1-5)
     private String comment;
     private String username;
 
@@ -63,11 +63,11 @@ public class Review {
         this.shownickname = show_nickname;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
