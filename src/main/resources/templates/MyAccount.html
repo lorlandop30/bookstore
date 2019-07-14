@@ -47,11 +47,13 @@
                 <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
                 </button>
             </form>
+
             <ul class="navbar-nav mr-auto">
             </ul>
 
             <div >
             <ul class="nav navbar-nav navbar-right">
+
                 <li>
                     <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
                             class="sr-only">(current)</span></a>
@@ -60,7 +62,7 @@
                     <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
-                    <a class="nav-link"  th:href="@{/MyProfile}">My Account <span class="sr-only">(current)</span></a>
+                    <a class="nav-link"  href="/MyProfile">My Account <span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>

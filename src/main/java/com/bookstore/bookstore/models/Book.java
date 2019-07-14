@@ -1,22 +1,38 @@
 package com.bookstore.bookstore.models;
 
-//import org.springframework.web.multipart.MultipartFile;
+import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.List;
-
 @Entity
-public class Book {
+public class Book implements Comparable <Book> {
+    @Override
+    public int compareTo(Book o) {
+        return 0;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private String title;
     private String author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="genre_id")
+    private Genre genre;
+    private double price;
+    private boolean topseller;
+    private double rating;
     private String publisher;
     private String publicationDate;
     private String language;
@@ -27,15 +43,33 @@ public class Book {
     private double shippingWeight;
     private double listPrice;
     private double ourPrice;
-    private boolean active = true;
+    private boolean active=true;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(columnDefinition="text")
+    private String description;
+    private int inStockNumber;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Transient
+    private MultipartFile bookImage;
+
+
+//    public Book(String title, String author, String publisher, String publicationDate, String language, String category, int numberOfPages, String format, int isbn, double shippingWeight, double listPrice, double ourPrice, String description, int inStockNumber) {
+//        this.title = title;
+//        this.author = author;
+//        this.publisher = publisher;
+//        this.publicationDate = publicationDate;
+//        this.language = language;
+//        this.category = category;
+//        this.numberOfPages = numberOfPages;
+//        this.format = format;
+//        this.isbn = isbn;
+//        this.shippingWeight = shippingWeight;
+//        this.listPrice = listPrice;
+//        this.ourPrice = ourPrice;
+//        this.description = description;
+//        this.inStockNumber = inStockNumber;
+//
+//    }
 
     public String getTitle() {
         return title;
@@ -51,6 +85,41 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isTopseller() {
+        return topseller;
+    }
+
+    public void setTopseller(boolean topseller) {
+        this.topseller = topseller;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public Book() {
     }
 
     public String getPublisher() {
@@ -125,6 +194,10 @@ public class Book {
         this.listPrice = listPrice;
     }
 
+    public double getOurPrice() {
+        return ourPrice;
+    }
+
     public void setOurPrice(double ourPrice) {
         this.ourPrice = ourPrice;
     }
@@ -176,5 +249,11 @@ public class Book {
         this.inStockNumber = inStockNumber;
     }
 
+    public MultipartFile getBookImage() {
+        return bookImage;
+    }
 
+    public void setBookImage(MultipartFile bookImage) {
+        this.bookImage = bookImage;
+    }
 }

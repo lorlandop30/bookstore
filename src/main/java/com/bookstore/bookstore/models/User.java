@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,6 +35,13 @@ public class User implements UserDetails {
     private Set<UserRole> userRoles = new HashSet<>();
 
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserShipping> userShippingList;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserPayment> userPaymentList;
+
     public User() {
     }
 
@@ -44,6 +52,27 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+    }
+
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<UserShipping> getUserShippingList() {
+        return userShippingList;
+    }
+
+    public void setUserShippingList(List<UserShipping> userShippingList) {
+        this.userShippingList = userShippingList;
+    }
+
+    public List<UserPayment> getUserPaymentList() {
+        return userPaymentList;
+    }
+
+    public void setUserPaymentList(List<UserPayment> userPaymentList) {
+        this.userPaymentList = userPaymentList;
     }
 
     public void setEnabled(Boolean enabled) {
