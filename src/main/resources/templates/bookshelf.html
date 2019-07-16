@@ -1,5 +1,7 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,16 +42,15 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Search form -->
-            <form class="form-inline my-2 my-lg-0">
+            <form action="#" th:action="@{/bookshelf}" method="get" class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
                 <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
                 </button>
-                <select name="sort">
-                    <option value="title">title</option>
-                    <option value="author">author</option>
-                    <option value="price">price</option>
-                    <option value="rating">rating</option>
-                    <option value="date">date</option>
+                <select th:field="*{sortColumn}" th:selected="*{sortColumn}">
+                    <option
+                            th:each="sc : ${sortColumns}"
+                            th:value="${sc}"
+                            th:text="${sc}"></option>
                 </select>
             </form>
             <ul class="navbar-nav mr-auto">

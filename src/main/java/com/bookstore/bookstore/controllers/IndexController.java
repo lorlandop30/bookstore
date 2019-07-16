@@ -70,9 +70,10 @@ public class IndexController {
     }
 
     @RequestMapping("/bookshelf")
-    public String bookshelf(@RequestParam(value = "sort", required = false) String sort, Model model) {
+    public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort, Model model) {
         List<Book> bookList = null;
         if (sort == null || "".equals(sort)){
+            sort = "title";
            bookList = bookService.findAll();
         }
         else if ("title".equalsIgnoreCase(sort)){
@@ -91,6 +92,9 @@ public class IndexController {
             bookList = bookService.findAllByOrderByPriceAsc();
         }
         model.addAttribute("bookList", bookList);
+        model.addAttribute("sortColumn", sort);
+        List<String> sortColumns = Arrays.asList(new String[] {"title", "author", "date", "rating", "price"});
+        model.addAttribute("sortColumns", sortColumns);
 
         return "bookshelf";
     }
