@@ -70,7 +70,7 @@ public class IndexController {
     }
 
     @RequestMapping("/bookshelf")
-    public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort, Model model) {
+    public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort, Model model, Principal principal) {
         List<Book> bookList = null;
         if (sort == null || "".equals(sort)){
             sort = "title";
@@ -89,12 +89,21 @@ public class IndexController {
             bookList = bookService.findAllByOrderByRatingAsc();
         }
         else if ("price".equalsIgnoreCase(sort)){
-            bookList = bookService.findAllByOrderByPriceAsc();
+            bookList = bookService.findAllByOrderByOurPriceAsc();
+        }
+        else {
+            model.addAttribute("emptyList", Boolean.TRUE);
         }
         model.addAttribute("bookList", bookList);
-        model.addAttribute("sortColumn", sort);
+        BookshelfForm bf = new BookshelfForm(sort);
+        model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[] {"title", "author", "date", "rating", "price"});
         model.addAttribute("sortColumns", sortColumns);
+        if(principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
 
         return "bookshelf";
     }

@@ -42,8 +42,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> findAllByOrderByPriceAsc() {
-        return bookRepository.findAllByOrderByPriceAsc();
+    public List<Book> findAllByOrderByOurPriceAsc() {
+        return bookRepository.findAllByOrderByOurPriceAsc();
     }
 
     @Override

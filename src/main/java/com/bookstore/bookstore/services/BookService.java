@@ -12,7 +12,7 @@ public interface BookService {
     List<Book> findAllByOrderByAuthorAsc();
     List<Book> findAllByOrderByPublicationDateAsc();
     List<Book> findAllByOrderByRatingAsc();
-    List<Book> findAllByOrderByPriceAsc();
+    List<Book> findAllByOrderByOurPriceAsc();
 
     List<Book> searchTitle(String title);
         List<Book> searchAuthor(String author);
