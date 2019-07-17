@@ -1,6 +1,7 @@
 
 
 var stars = document.querySelectorAll(".star");
+var starValue = document.querySelector("#score");
 var rating = 0;
 var isClicked;
 
@@ -37,6 +38,8 @@ stars.forEach(function(e) {
         e.classList.add("fas");
         $("i.fas").prevAll().removeClass("far");
         $("i.fas").prevAll().addClass("fas");
+
+        starValue.value = rating;
 
     });
 

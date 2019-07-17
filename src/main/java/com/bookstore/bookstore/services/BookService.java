@@ -22,5 +22,8 @@ public interface BookService {
     List<Book> findByGenreOrderByOurPriceAsc(Genre genre);
 
     List<Book> searchTitle(String title);
-        List<Book> searchAuthor(String author);
+    List<Book> searchAuthor(String author);
+    double getAverageRating (Long id);
+    int getNumberOfReviews (Long id);
+
 }

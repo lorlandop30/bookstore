@@ -127,6 +127,19 @@ public class IndexController {
         model.addAttribute("qtyList", qtyList);
         model.addAttribute("qty", 1);
 
+        model.addAttribute("averageRating",bookService.getAverageRating(id));
+
+        model.addAttribute("bookReviewsList", book.getReviewsList());
+
+        model.addAttribute("numberOfReviews", bookService.getNumberOfReviews(id));
+
+        if (bookService.getNumberOfReviews(id)== 0) {
+            model.addAttribute("NoReviews", true);
+        }
+        else{
+            model.addAttribute("Reviews", true);
+        }
+
         return "bookDetail";
     }
 
