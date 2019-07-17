@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Entity
 public class Book implements Comparable <Book> {
     @Override
@@ -52,6 +54,8 @@ public class Book implements Comparable <Book> {
     @Transient
     private MultipartFile bookImage;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    private List<Review> reviewsList;
 
 //    public Book(String title, String author, String publisher, String publicationDate, String language, String category, int numberOfPages, String format, int isbn, double shippingWeight, double listPrice, double ourPrice, String description, int inStockNumber) {
 //        this.title = title;
@@ -70,6 +74,7 @@ public class Book implements Comparable <Book> {
 //        this.inStockNumber = inStockNumber;
 //
 //    }
+
 
     public String getTitle() {
         return title;
@@ -256,4 +261,14 @@ public class Book implements Comparable <Book> {
     public void setBookImage(MultipartFile bookImage) {
         this.bookImage = bookImage;
     }
+
+    public List<Review> getReviewsList() {
+        return reviewsList;
+    }
+
+    public void setReviewsList(List<Review> reviewsList) {
+        this.reviewsList = reviewsList;
+    }
+
+
 }
