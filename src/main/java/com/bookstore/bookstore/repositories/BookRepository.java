@@ -19,6 +19,12 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findAllByOrderByRatingAsc();
     List<Book> findAllByOrderByOurPriceAsc();
 
+    List<Book> findByGenreOrderByTitleAsc(Genre genre);
+    List<Book> findByGenreOrderByAuthorAsc(Genre genre);
+    List<Book> findByGenreOrderByPublicationDateAsc(Genre genre);
+    List<Book> findByGenreOrderByRatingAsc(Genre genre);
+    List<Book> findByGenreOrderByOurPriceAsc(Genre genre);
+
 
 }
 

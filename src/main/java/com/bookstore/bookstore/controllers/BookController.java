@@ -3,13 +3,11 @@ package com.bookstore.bookstore.controllers;
 import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Category;
 import com.bookstore.bookstore.models.Genre;
+import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.repositories.BookRepository;
 import com.bookstore.bookstore.repositories.CategoryRepository;
 import com.bookstore.bookstore.repositories.GenreRepository;
-import com.bookstore.bookstore.services.BookService;
-import com.bookstore.bookstore.services.BookServiceImpl;
-import com.bookstore.bookstore.services.CategoryService;
-import com.bookstore.bookstore.services.GenreService;
+import com.bookstore.bookstore.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +40,12 @@ public class BookController {
 
     @Autowired
     private GenreRepository genreRepository;
+
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addBook(Model model) {
@@ -89,14 +95,50 @@ public class BookController {
         return null;
     }
 
-    @RequestMapping("/genre/{genreId}")
-    public String listByGenre(@PathVariable(value = "genreId") long genreId, Model model) {
+    @RequestMapping("/bookshelf}")
+    public String listByGenre(@RequestParam(value = "genreId", required = false) long genreId,
+                              @RequestParam(value = "sortColumn", required = false) String sort, Model model, Principal principal) {
 
         Genre genre = new Genre();
         genre.setID(genreId);
-        List<Book> books = bookRepository.findByGenre(genre);
-        System.out.println(books);
-        model.addAttribute("bookList", books);
+        List<Book> bookList = null;
+        if (sort == null || "".equals(sort)){
+            sort = "title";
+            bookList = bookService.findByGenreOrderByTitleAsc(genre);
+        }
+        else if ("title".equalsIgnoreCase(sort)){
+            bookList = bookService.findByGenreOrderByTitleAsc(genre);
+        }
+        else if ("author".equalsIgnoreCase(sort)){
+            bookList = bookService.findByGenreOrderByAuthorAsc(genre);
+        }
+        else if ("date".equalsIgnoreCase(sort)){
+            bookList = bookService.findByGenreOrderByPublicationDateAsc(genre);
+        }
+        else if ("rating".equalsIgnoreCase(sort)){
+            bookList = bookService.findByGenreOrderByRatingAsc(genre);
+        }
+        else if ("price".equalsIgnoreCase(sort)){
+            bookList = bookService.findByGenreOrderByOurPriceAsc(genre);
+        }
+        else {
+            model.addAttribute("emptyList", Boolean.TRUE);
+        }
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setGenreId(genreId);
+
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[] {"title", "author", "date", "rating", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if(principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+
+        }
+
+
         return "bookshelf";
     }
 
