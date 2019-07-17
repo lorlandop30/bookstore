@@ -14,15 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/book")
@@ -95,38 +93,48 @@ public class BookController {
         return null;
     }
 
-    @RequestMapping("/bookshelf}")
-    public String listByGenre(@RequestParam(value = "genreId", required = false) long genreId,
+    @RequestMapping("/bookshelf")
+    public String listByGenre(@RequestParam(value = "genreId", required = false) Long genreId,
+                              @RequestParam(value = "categoryId", required = false) Long categoryId,
                               @RequestParam(value = "sortColumn", required = false) String sort, Model model, Principal principal) {
 
-        Genre genre = new Genre();
-        genre.setID(genreId);
-        List<Book> bookList = null;
-        if (sort == null || "".equals(sort)){
-            sort = "title";
-            bookList = bookService.findByGenreOrderByTitleAsc(genre);
-        }
-        else if ("title".equalsIgnoreCase(sort)){
-            bookList = bookService.findByGenreOrderByTitleAsc(genre);
-        }
-        else if ("author".equalsIgnoreCase(sort)){
-            bookList = bookService.findByGenreOrderByAuthorAsc(genre);
-        }
-        else if ("date".equalsIgnoreCase(sort)){
-            bookList = bookService.findByGenreOrderByPublicationDateAsc(genre);
-        }
-        else if ("rating".equalsIgnoreCase(sort)){
-            bookList = bookService.findByGenreOrderByRatingAsc(genre);
-        }
-        else if ("price".equalsIgnoreCase(sort)){
-            bookList = bookService.findByGenreOrderByOurPriceAsc(genre);
+
+        Collection<Book> bookList = null;
+
+        if (categoryId == null || categoryId <= 0) {
+            Genre genre = new Genre();
+            genre.setID(genreId);
+            if (sort == null || "".equals(sort)) {
+                sort = "title";
+                bookList = bookService.findByGenreOrderByTitleAsc(genre);
+            } else if ("title".equalsIgnoreCase(sort)) {
+                bookList = bookService.findByGenreOrderByTitleAsc(genre);
+            } else if ("author".equalsIgnoreCase(sort)) {
+                bookList = bookService.findByGenreOrderByAuthorAsc(genre);
+            } else if ("date".equalsIgnoreCase(sort)) {
+                bookList = bookService.findByGenreOrderByPublicationDateAsc(genre);
+            } else if ("rating".equalsIgnoreCase(sort)) {
+                bookList = bookService.findByGenreOrderByRatingAsc(genre);
+            } else if ("price".equalsIgnoreCase(sort)) {
+                bookList = bookService.findByGenreOrderByOurPriceAsc(genre);
+            } else {
+                model.addAttribute("emptyList", Boolean.TRUE);
+            }
         }
         else {
-            model.addAttribute("emptyList", Boolean.TRUE);
+            Category category = new Category();
+            category.setId(categoryId);
+            List<Genre> genres = genreRepository.findByCategory(category);
+            bookList = new HashSet<>();
+            for (Genre genre2: genres) {
+                List<Book> bks = bookRepository.findByGenre(genre2);
+                bookList.addAll(bks);
+            }
         }
         model.addAttribute("bookList", bookList);
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setGenreId(genreId);
+        bf.setCategoryId(categoryId);
 
         model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[] {"title", "author", "date", "rating", "price"});
@@ -142,19 +150,6 @@ public class BookController {
         return "bookshelf";
     }
 
-    @RequestMapping("/category/{categoryId}")
-    public String listByCategory(@PathVariable(value = "categoryId") long categoryId, Model model) {
-        Category category = new Category();
-        category.setId(categoryId);
-        List<Genre> genres = genreRepository.findByCategory(category);
-        Set<Book> books = new HashSet<>();
-        for (Genre genre: genres) {
-            List<Book> bks = bookRepository.findByGenre(genre);
-            books.addAll(bks);
-        }
-        model.addAttribute("bookList", books);
-        return "bookshelf";
-    }
 }
 //
 //    private BookRepository bookRepository;

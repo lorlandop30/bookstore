@@ -2,16 +2,26 @@ package com.bookstore.bookstore.controllers;
 
 public class BookshelfForm {
     private String sortColumn;
-    private long genreId;
-    public BookshelfForm() {
-    }
+    private Long genreId;
+    private Long categoryId;
 
-    public long getGenreId() {
+    public Long getGenreId() {
         return genreId;
     }
 
-    public void setGenreId(long genreId) {
+    public void setGenreId(Long genreId) {
         this.genreId = genreId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public BookshelfForm() {
     }
 
     public String getSortColumn() {

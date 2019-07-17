@@ -11,7 +11,7 @@
 <body>
 <table>
 <tr th:each="category:${categories}">
-    <td> <a th:href="@{/book/category/{categoryId}(categoryId=${category.id})}" th:text="${category.name}" ></a></td>
+    <td> <a th:href="@{/book/bookshelf?categoryId={categoryId}(categoryId=${category.id})}" th:text="${category.name}" ></a></td>
 </tr>
 </table>
 </body>
