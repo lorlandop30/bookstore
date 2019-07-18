@@ -52,6 +52,7 @@
                             th:value="${sc}"
                             th:text="${sc}"></option>
                 </select>
+                <input type="checkbox" th:field="*{topseller}"/> Show Top Sellers Only
                 <input type="hidden" th:field="*{genreId}" />
                 <input type="hidden" th:field="*{categoryId}" />
             </form>

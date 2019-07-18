@@ -4,9 +4,18 @@ public class BookshelfForm {
     private String sortColumn;
     private Long genreId;
     private Long categoryId;
+    private Boolean topseller;
 
     public Long getGenreId() {
         return genreId;
+    }
+
+    public Boolean getTopseller() {
+        return topseller;
+    }
+
+    public void setTopseller(Boolean topseller) {
+        this.topseller = topseller;
     }
 
     public void setGenreId(Long genreId) {

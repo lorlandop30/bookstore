@@ -43,6 +43,11 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public List<Book> findAllByOrderByRatingDesc() {
+        return bookRepository.findAllByOrderByRatingDesc();
+    }
+
+    @Override
     public List<Book> findAllByOrderByOurPriceAsc() {
         return bookRepository.findAllByOrderByOurPriceAsc();
     }
@@ -68,8 +73,73 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public List<Book> findByGenreOrderByRatingDesc(Genre genre) {
+        return bookRepository.findByGenreOrderByRatingDesc(genre);
+    }
+
+    @Override
     public List<Book> findByGenreOrderByOurPriceAsc(Genre genre) {
         return bookRepository.findByGenreOrderByOurPriceAsc(genre);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByTitleAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByTitleAsc(topseller);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByAuthorAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByAuthorAsc(topseller);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByPublicationDateAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByPublicationDateAsc(topseller);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByRatingAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByRatingAsc(topseller);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByRatingDesc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByRatingDesc(topseller);
+    }
+
+    @Override
+    public List<Book> findByTopsellerOrderByOurPriceAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByOurPriceAsc(topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByTitleAsc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByTitleAsc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByAuthorAsc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByAuthorAsc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByPublicationDateAsc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByPublicationDateAsc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByRatingAsc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByRatingAsc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByRatingDesc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByRatingDesc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByOurPriceAsc(Genre genre, Boolean topseller) {
+        return bookRepository.findByGenreAndTopsellerOrderByOurPriceAsc(genre, topseller);
     }
 
     public double getAverageRating (Long id) {
