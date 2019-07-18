@@ -1,6 +1,8 @@
 package com.bookstore.bookstore.repositories;
 import com.bookstore.bookstore.models.Book;
+import com.bookstore.bookstore.models.Category;
 import com.bookstore.bookstore.models.Genre;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +44,31 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findByGenreAndTopsellerOrderByRatingDesc(Genre genre, Boolean topseller);
     List<Book> findByGenreAndTopsellerOrderByOurPriceAsc(Genre genre, Boolean topseller);
 
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY title", nativeQuery = true)
+    List<Book> findByCategoryOrderByTitleAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY author", nativeQuery = true)
+    List<Book> findByCategoryOrderByAuthorAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY publication_date", nativeQuery = true)
+    List<Book> findByCategoryOrderByPublicationDateAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY rating", nativeQuery = true)
+    List<Book> findByCategoryOrderByRatingAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY rating desc", nativeQuery = true)
+    List<Book> findByCategoryOrderByRatingDesc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 ORDER BY our_price", nativeQuery = true)
+    List<Book> findByCategoryOrderByOurPriceAsc(Category category);
 
+
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY title", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByTitleAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY author", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByAuthorAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY publication_date", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByPublicationDateAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY rating", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByRatingAsc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY rating desc", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByRatingDesc(Category category);
+    @Query(value = "SELECT b.* FROM book b JOIN genre g ON b.genre_id = g.id JOIN category c ON g.category_id = c.id WHERE c.id = ?1 AND topseller ORDER BY our_price", nativeQuery = true)
+    List<Book> findByCategoryAndTopsellerOrderByOurPriceAsc(Category category);
 }
 

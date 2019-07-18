@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
+import com.bookstore.bookstore.models.Category;
 import com.bookstore.bookstore.models.Genre;
 import com.bookstore.bookstore.models.Review;
 import com.bookstore.bookstore.repositories.BookRepository;
@@ -140,6 +141,67 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> findByGenreAndTopsellerOrderByOurPriceAsc(Genre genre, Boolean topseller) {
         return bookRepository.findByGenreAndTopsellerOrderByOurPriceAsc(genre, topseller);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByTitleAsc(Category category) {
+        return bookRepository.findByCategoryOrderByTitleAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByAuthorAsc(Category category) {
+        return bookRepository.findByCategoryOrderByAuthorAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByPublicationDateAsc(Category category) {
+        return bookRepository.findByCategoryOrderByPublicationDateAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByRatingAsc(Category category) {
+        return bookRepository.findByCategoryOrderByRatingAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByRatingDesc(Category category) {
+        return bookRepository.findByCategoryOrderByRatingDesc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryOrderByOurPriceAsc(Category category) {
+        return bookRepository.findByCategoryOrderByOurPriceAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByTitleAsc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByTitleAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByAuthorAsc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByAuthorAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByPublicationDateAsc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByPublicationDateAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByRatingAsc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByRatingAsc(category);
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByRatingDesc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByRatingDesc(category);
+
+    }
+
+    @Override
+    public List<Book> findByCategoryAndTopsellerOrderByOurPriceAsc(Category category) {
+        return bookRepository.findByCategoryAndTopsellerOrderByOurPriceAsc(category);
     }
 
     public double getAverageRating (Long id) {

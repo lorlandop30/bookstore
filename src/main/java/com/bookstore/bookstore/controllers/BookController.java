@@ -94,10 +94,10 @@ public class BookController {
     }
 
     @RequestMapping("/bookshelf")
-    public String listByGenre(@RequestParam(value = "genreId", required = false) Long genreId,
-                              @RequestParam(value = "categoryId", required = false) Long categoryId,
-                              @RequestParam(value = "topseller", required = false) Boolean topseller,
-                              @RequestParam(value = "sortColumn", required = false) String sort, Model model, Principal principal) {
+    public String bookshelf(@RequestParam(value = "genreId", required = false) Long genreId,
+                            @RequestParam(value = "categoryId", required = false) Long categoryId,
+                            @RequestParam(value = "topseller", required = false) Boolean topseller,
+                            @RequestParam(value = "sortColumn", required = false) String sort, Model model, Principal principal) {
 
         Collection<Book> bookList = null;
 
@@ -108,64 +108,94 @@ public class BookController {
                 sort = "title";
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByTitleAsc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByTitleAsc(genre, topseller);
                 }
             } else if ("title".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByTitleAsc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByTitleAsc(genre, topseller);
                 }
             } else if ("author".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByAuthorAsc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByAuthorAsc(genre, topseller);
                 }
             } else if ("date".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByPublicationDateAsc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByPublicationDateAsc(genre, topseller);
                 }
             } else if ("rating asc".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByRatingAsc(genre);
-                }
-                else{
-                    bookList = bookService.findByGenreAndTopsellerOrderByRatingAsc(genre,topseller);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByRatingAsc(genre, topseller);
                 }
             } else if ("rating desc".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByRatingDesc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByRatingDesc(genre, topseller);
                 }
-            }  else if ("price".equalsIgnoreCase(sort)) {
+            } else if ("price".equalsIgnoreCase(sort)) {
                 if (topseller == null || !topseller) {
                     bookList = bookService.findByGenreOrderByOurPriceAsc(genre);
-                }
-                else{
+                } else {
                     bookList = bookService.findByGenreAndTopsellerOrderByOurPriceAsc(genre, topseller);
                 }
             } else {
                 model.addAttribute("emptyList", Boolean.TRUE);
             }
-        }
-        else {
+        } else {
             Category category = new Category();
             category.setId(categoryId);
-            List<Genre> genres = genreRepository.findByCategory(category);
-            bookList = new HashSet<>();
-            for (Genre genre2: genres) {
-                List<Book> bks = bookRepository.findByGenre(genre2);
-                bookList.addAll(bks);
+            if (sort == null || "".equals(sort)) {
+                sort = "title";
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByTitleAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByTitleAsc(category);
+                }
+            } else if ("title".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByTitleAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByTitleAsc(category);
+                }
+            } else if ("author".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByAuthorAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByAuthorAsc(category);
+                }
+            } else if ("date".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByPublicationDateAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByPublicationDateAsc(category);
+                }
+            } else if ("rating asc".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByRatingAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByRatingAsc(category);
+                }
+            } else if ("rating desc".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByRatingDesc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByRatingDesc(category);
+                }
+            } else if ("price".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByCategoryOrderByOurPriceAsc(category);
+                } else {
+                    bookList = bookService.findByCategoryAndTopsellerOrderByOurPriceAsc(category);
+                }
             }
         }
         model.addAttribute("bookList", bookList);
@@ -174,9 +204,9 @@ public class BookController {
         bf.setCategoryId(categoryId);
 
         model.addAttribute("formobject", bf);
-        List<String> sortColumns = Arrays.asList(new String[] {"title", "author", "date", "rating asc", "rating desc", "price"});
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
-        if(principal != null) {
+        if (principal != null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
