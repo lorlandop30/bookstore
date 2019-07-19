@@ -1,7 +1,6 @@
 package com.bookstore.bookstore.models;
 
 import com.bookstore.bookstore.models.User;
-import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
 
