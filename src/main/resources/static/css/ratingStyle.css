@@ -22,3 +22,26 @@
     float: right;
     margin-right: 0.5rem;
 }
+
+#head{
+    text-align: center;
+}
+
+.reviewbtn{
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
+.fa-user-circle{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.userStar{
+    display: inline;
+    color: gold;
+}
+
+#noReviews{
+    text-align: center;
+}

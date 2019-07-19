@@ -34,7 +34,6 @@ public class BookstoreApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
 		User user1 =new User();
 		user1.setFirstName("Jhon");
 		user1.setLastName("adams");
@@ -46,7 +45,6 @@ public class BookstoreApplication implements CommandLineRunner {
 		role1.setRoleId(1);
 		role1.setName("Role_User");
 		userRoles.add(new UserRole(user1, role1));
-
 		userService.createUser(user1, userRoles);
 	}
 

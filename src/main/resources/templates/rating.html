@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Rating and Comments</title>
@@ -63,11 +63,11 @@ COMMON NAVBAR
     <div class="container my-3">
         <div class="row justify-content-center">
             <div class="col-6 align-self-center">
-                <img src="/img/2.jpg" alt="image" class="img-fluid float-right" id="rateImg">
+                <img th:src="@{/img/books/}+${book.id}+'.png'" alt="image" class="img-fluid float-right" id="rateImg">
             </div>
             <div class="col-6 align-self-center my-auto">
-                <h2>NAME OF THE BOOK</h2>
-                <p>By FirstName LastName</p>
+                <h2><span th:text="${book.title}"></span></h2>
+                <p><span th:text="${book.author}"></span><p>
             </div>
         </div>
     </div>
@@ -101,15 +101,24 @@ COMMON NAVBAR
     </div>
 
     <div class="container justify-content-center mb-3" id="commentsEntry">
-        <form action="">
+      <form th:action="@{addReview}" method="post" th:object="${review}">
+          <input hidden="hidden" th:name="id"
+                 th:value="${id}" />
+
+          <!--  THIS SECTION STORES THE RESULT OF THE USER RATING -->
+          <input hidden="hidden" name="score" id="score" value="0"/>
+
+          <input hidden="hidden" name="bookId" id="bookId" th:value="${book.id}"/>
+
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Comments</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea th:name="comment" th:value="${comment}"
+                          class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
-            <input type="radio" name="showName" value="nickname" class="nameChoice" checked> Show nickname
-            <input type="radio" name="showName" value="anonymous" class="nameChoice"> Remain anonymous
-            <button type="button" class="btn btn-dark reviewButtons">Cancel</button>
-            <button type="button" class="btn btn-dark reviewButtons">Submit</button>
+            <input type="radio" value="true"  name="showName" class="nameChoice" checked/> Show nickname
+            <input type="radio" value="false"  name="showName" class="nameChoice"  /> Remain anonymous
+            <a th:href="@{/bookDetail?id=}+${book.id}"><button type="button"  class="btn btn-dark reviewButtons">Cancel</button></a>
+            <button type="submit" class="btn btn-dark reviewButtons">Submit</button>
         </form>
     </div>
 </section> <!--End of rating_comments section-->

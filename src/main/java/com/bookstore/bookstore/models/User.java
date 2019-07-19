@@ -42,7 +42,18 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserPayment> userPaymentList;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Review> userReviewsList;
+
     public User() {
+    }
+
+    public List<Review> getUserReviewsList() {
+        return userReviewsList;
+    }
+
+    public void setUserReviewsList(List<Review> userReviewsList) {
+        this.userReviewsList = userReviewsList;
     }
 
     public User(String username, String password, String firstName, String lastName, String email, String phone) {
