@@ -194,4 +194,9 @@ button.btn.btn-dark:hover {
 
 .sorting{
     height: 100%;
+    font-size: 0.8rem;
+}
+
+.sorting_header{
+    font-weight: bold;
 }

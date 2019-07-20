@@ -57,7 +57,7 @@ public class RatingController {
     @RequestMapping(value = "/addReview", method = RequestMethod.POST)
     public String addReview(Model model, Principal principal, @ModelAttribute("review") Review review,
                             @RequestParam(value = "showName", required = false) String showname,
-                            @RequestParam(value = "score", required = false) int score,
+                            @RequestParam(value = "score", required = false) double score,
                             @RequestParam(value = "bookId", required = false) Long id){
 
         User user = userService.findByUsername(principal.getName());

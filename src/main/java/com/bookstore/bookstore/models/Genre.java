@@ -51,7 +51,7 @@ public class Genre {
         this.category = category;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="category_id")
     private Category category;
 }

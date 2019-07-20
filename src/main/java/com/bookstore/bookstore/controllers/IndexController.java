@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import com.bookstore.bookstore.repositories.BookRepository;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -73,54 +74,8 @@ public class IndexController {
     public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort,
                             @RequestParam(value = "topseller", required = false) Boolean topseller,
                             Model model, Principal principal) {
-        List<Book> bookList = null;
+        List<Book> bookList = bookService.findAll();
 
-        if (sort == null || "".equals(sort)) {
-            sort = "title";
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAll();
-            } else {
-                bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
-            }
-        } else if ("title".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByTitleAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
-            }
-        } else if ("author".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByAuthorAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
-            }
-        } else if ("date".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByPublicationDateAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByPublicationDateAsc(topseller);
-            }
-        } else if ("rating asc".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByRatingAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByRatingAsc(topseller);
-            }
-        } else if ("rating desc".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByRatingDesc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByRatingDesc(topseller);
-            }
-        } else if ("price".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByOurPriceAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByOurPriceAsc(topseller);
-            }
-        } else {
-            model.addAttribute("emptyList", Boolean.TRUE);
-        }
         model.addAttribute("bookList", bookList);
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
@@ -132,6 +87,100 @@ public class IndexController {
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
+
+        return "bookshelf";
+    }
+
+    @RequestMapping(value = "/formbookshelf")
+    public String bookshelf(@RequestParam(value = "topseller", required = false) Boolean topseller,
+                            @RequestParam(value = "sortColumn", required = false) String sort,
+                            @RequestParam(value = "fiveStars", required = false) Boolean fiveStars,
+                            @RequestParam(value = "fourStars", required = false) Boolean fourStars,
+                            @RequestParam(value = "threeStars", required = false) Boolean threeStars,
+                            @RequestParam(value = "twoStars", required = false) Boolean twoStars,
+                            @RequestParam(value = "oneStars", required = false) Boolean oneStars,
+                            Model model, Principal principal) {
+
+        List<Book> bookList = bookService.findAll(); //Initializing to full list
+
+        if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
+            sort = "title";
+            if (topseller == null || !topseller) {
+                    bookList = bookService.findAllByOrderByTitleAsc();
+                } else {
+                    bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
+                }
+
+        }  else if ("author".equalsIgnoreCase(sort)) {
+            if (topseller == null || !topseller) {
+                    bookList = bookService.findAllByOrderByAuthorAsc();
+                } else {
+                    bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
+                }
+        } else if ("date".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByPublicationdate();
+            } else {
+                bookList = bookService.findByTopsellerOrderByPublicationdate(topseller);
+            }
+
+        } else if ("rating asc".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByRatingAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByRatingAsc(topseller);
+            }
+
+        } else if ("rating desc".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByRatingDesc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByRatingDesc(topseller);
+            }
+
+        } else if ("price".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByPriceAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByPriceAsc(topseller);
+            }
+
+        } else {
+                model.addAttribute("emptyList", Boolean.TRUE);
+        }
+
+        if(!(fiveStars==null && fourStars==null && threeStars==null && twoStars==null && oneStars==null)){
+            if(fiveStars==null){
+                bookList.removeIf(book -> (book.getRating()==5.0));
+            }
+            if(fourStars==null){
+                bookList.removeIf(book -> (book.getRating()>=4.0 && book.getRating()<5.0));
+            }
+            if(threeStars==null){
+                bookList.removeIf(book -> (book.getRating()>=3.0 && book.getRating()<4.0));
+            }
+            if(twoStars==null){
+                bookList.removeIf(book -> (book.getRating()>=2.0 && book.getRating()<3.0));
+            }
+            if(oneStars==null){
+                bookList.removeIf(book -> (book.getRating()>=1.0 && book.getRating()<2.0));
+            }
+            bookList.removeIf(book -> (book.getRating()<1.0));
+
+        }
+
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
 
         return "bookshelf";
     }
