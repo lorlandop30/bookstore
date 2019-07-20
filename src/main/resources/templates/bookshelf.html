@@ -94,6 +94,51 @@
                         <input type="hidden" th:field="*{categoryId}" />
                     </div>
 
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Language:</p>
+                        <select th:field="*{language}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="l : ${languageList}"
+                                    th:value="${l}"
+                                    th:text="${l}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Category:</p>
+                        <select th:field="*{category}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="cl : ${categoryList}"
+                                    th:value="${cl}"
+                                    th:text="${cl}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Format:</p>
+                        <select th:field="*{format}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="fl : ${formatList}"
+                                    th:value="${fl}"
+                                    th:text="${fl}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Price:</p>
+                        <span>Min </span><input type="text" th:field="*{minPrice}"/>
+                        <span>Max </span><input type="text" th:field="*{maxPrice}"/>
+                    </div>
+
                     <div class="container mt-3">
                         <p class="sorting_header mb-1">Review rating:</p>
                         <span style="display: block"><input type="checkbox" th:field="*{fiveStars}"/> 5.0</span>

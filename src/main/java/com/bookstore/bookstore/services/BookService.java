@@ -5,6 +5,7 @@ import com.bookstore.bookstore.models.Category;
 import com.bookstore.bookstore.models.Genre;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public interface BookService {
 
@@ -26,6 +27,9 @@ public interface BookService {
     List<Book> findByTopsellerOrderByRatingAsc(Boolean topseller);
     List<Book> findByTopsellerOrderByRatingDesc(Boolean topseller);
     List<Book> findByTopsellerOrderByPriceAsc(Boolean topseller);
+    List<String> findDistinctLanguageBy();
+    List<String> findDistinctCategoryBy();
+    List<String> findDistinctFormatBy();
 
     double getAverageRating (Long id);
     int getNumberOfReviews (Long id);

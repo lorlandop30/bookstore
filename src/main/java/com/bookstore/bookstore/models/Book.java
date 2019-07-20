@@ -70,14 +70,6 @@ public class Book implements Comparable <Book> {
         this.author = author;
     }
 
-//    public Genre getGenre() {
-//        return genre;
-//    }
-//
-//    public void setGenre(Genre genre) {
-//        this.genre = genre;
-//    }
-
     public double getPrice() {
         return price;
     }

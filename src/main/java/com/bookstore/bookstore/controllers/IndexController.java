@@ -74,9 +74,17 @@ public class IndexController {
     public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort,
                             @RequestParam(value = "topseller", required = false) Boolean topseller,
                             Model model, Principal principal) {
+
         List<Book> bookList = bookService.findAll();
+        List<String> languageList = bookService.findDistinctLanguageBy();
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+        List<String> formatList = bookService.findDistinctFormatBy();
 
         model.addAttribute("bookList", bookList);
+        model.addAttribute("languageList", languageList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("formatList", formatList);
+
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
         model.addAttribute("formobject", bf);
@@ -99,9 +107,17 @@ public class IndexController {
                             @RequestParam(value = "threeStars", required = false) Boolean threeStars,
                             @RequestParam(value = "twoStars", required = false) Boolean twoStars,
                             @RequestParam(value = "oneStars", required = false) Boolean oneStars,
+                            @RequestParam(value = "minPrice", required = false) double minPrice,
+                            @RequestParam(value = "maxPrice", required = false) double maxPrice,
+                            @RequestParam(value = "language", required = false) String language,
+                            @RequestParam(value = "category", required = false) String category,
+                            @RequestParam(value = "format", required = false) String format,
                             Model model, Principal principal) {
 
         List<Book> bookList = bookService.findAll(); //Initializing to full list
+
+
+        /*   Sorting books based on user selection */
 
         if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
             sort = "title";
@@ -149,6 +165,10 @@ public class IndexController {
                 model.addAttribute("emptyList", Boolean.TRUE);
         }
 
+        /*   Filtering books based on user selection */
+
+        /*   RATING FILTER */
+
         if(!(fiveStars==null && fourStars==null && threeStars==null && twoStars==null && oneStars==null)){
             if(fiveStars==null){
                 bookList.removeIf(book -> (book.getRating()==5.0));
@@ -169,6 +189,40 @@ public class IndexController {
 
         }
 
+        /*   PRICE FILTER */
+
+        if(minPrice>0.0){
+            bookList.removeIf(book -> (book.getOurPrice()<minPrice));
+        }
+
+        if(maxPrice>0.0){
+            bookList.removeIf(book -> (book.getOurPrice()>maxPrice));
+        }
+
+        /* LANGUAGES FILTER */
+
+        if(!language.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getLanguage().equalsIgnoreCase(language)));
+
+        /* CATEGORY FILTER */
+
+        if(!category.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getCategory().equalsIgnoreCase(category)));
+
+        /* FORMAT FILTER */
+
+        if(!format.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getFormat().equalsIgnoreCase(format)));
+
+
+
+        List<String> languageList = bookService.findDistinctLanguageBy();
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+        List<String> formatList = bookService.findDistinctFormatBy();
+
+        model.addAttribute("languageList", languageList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("formatList", formatList);
         model.addAttribute("bookList", bookList);
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
