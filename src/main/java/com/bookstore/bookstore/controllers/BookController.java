@@ -72,10 +72,6 @@ public class BookController {
         return "addBook";
     }
 
-    @RequestMapping("/searchTitle")
-    public List<Book> searchTitle(@RequestParam("title") String title) {
-        return null;
-    }
 
 //    @PostMapping("/importBooks")
 //    public void savingBooks(@RequestParam(value = "title") String title,

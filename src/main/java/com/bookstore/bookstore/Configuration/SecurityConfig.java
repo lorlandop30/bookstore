@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/bookDetail",
             "/book/genreBrowser",
             "/book/categoryBrowser",
-            "/formbookshelf"
+            "/formbookshelf",
+            "/searchTitle"
     };
 
     @Override

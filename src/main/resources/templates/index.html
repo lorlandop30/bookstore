@@ -46,10 +46,9 @@
             <a class="nav-link" href="/bookshelf">Books<span
                     class="sr-only">(current)</span></a>
             <!-- Search form -->
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
-                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
-                </button>
+            <form class="form-inline my-2 my-lg-0" th:action="searchTitle" th:object="${formobject}">
+                <input class="form-control mr-sm-2" type="search" placeholder="Book title" th:field="*{title}" aria-label="Search">
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search</button>
             </form>
 
             <ul class="navbar-nav mr-auto"></ul>
@@ -162,24 +161,12 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row ">
-
                             <div class="col-xs-1"><img class="img-fluid" src="/img/1.jpg" alt="First"></div>
                             <div class="col-xs-1"><img class="img-fluid" src="/img/2.jpg" alt="First"></div>
                             <div class="col-xs-1"><img class="img-fluid" src="/img/3.jpg" alt="First"></div>
                             <div class="col-xs-1"><img class="img-fluid" src="/img/4.jpg" alt="First"></div>
                             <div class="col-xs-1"><img class="img-fluid" src="/img/5.jpg" alt="First"></div>
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row ">
-
-                            <div class="col-xs-1"><img class="img-fluid" src="/img/6.jpg" alt="First"></div>
-                            <div class="col-xs-1"><img class="img-fluid" src="/img/7.jpg" alt="First"></div>
-                            <div class="col-xs-1"><img class="img-fluid" src="/img/8.jpg" alt="First"></div>
-                            <div class="col-xs-1"><img class="img-fluid" src="/img/9.jpg" alt="First"></div>
-                            <div class="col-xs-1"><img class="img-fluid" src="/img/10.jpg" alt="First"></div>
-                        </div>
-
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
                        data-slide="prev">
