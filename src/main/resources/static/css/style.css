@@ -29,14 +29,6 @@ body {
     text-shadow: 0 1px 2px rgba(0,0,0,.6);
     font-size: 1.3rem;
 }
-/*
-.ex{
-    border: 4px solid green;
-}
-
-.img-fluid{
-    border: 2px solid green;
-}*/
 .featured{
     padding-top: 30px;
     padding-bottom: 5px;
@@ -188,6 +180,7 @@ button.btn.btn-dark:hover {
 
 .bookshelf{
     padding-bottom: 50px;
+    margin-top: 50px;
 }
 
 .book-item{
@@ -197,4 +190,13 @@ button.btn.btn-dark:hover {
 
 .card-text{
     display: block;
+}
+
+.sorting{
+    height: 100%;
+    font-size: 0.8rem;
+}
+
+.sorting_header{
+    font-weight: bold;
 }

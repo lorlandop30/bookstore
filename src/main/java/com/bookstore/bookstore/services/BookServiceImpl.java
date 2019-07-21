@@ -1,26 +1,49 @@
 package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
-import com.bookstore.bookstore.models.Category;
-import com.bookstore.bookstore.models.Genre;
 import com.bookstore.bookstore.models.Review;
 import com.bookstore.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
+
 
     public List<Book> findAll() {
         return (List<Book>) bookRepository.findAll();
     }
 
+    @Override
     public Book findBookById(Long id) {
         return bookRepository.findBookById(id);
+    }
+
+    @Override
+    public Book findBookByIsbn(int isbn) {
+        return bookRepository.findBookByIsbn(isbn);
+    }
+
+    @Override
+    public List<Book> findByRating(double rating) {
+        return bookRepository.findByRating(rating);
+    }
+
+    @Override
+    public List<Book> findByTitle(String title) {
+        return bookRepository.findByTitle(title);
+    }
+
+    @Override
+    public List<Book> findByAuthor(String author) {
+        return bookRepository.findByAuthor(author);
     }
 
     @Override
@@ -34,8 +57,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> findAllByOrderByPublicationDateAsc() {
-        return bookRepository.findAllByOrderByPublicationDateAsc();
+    public List<Book> findAllByOrderByPublicationdate() {
+        return bookRepository.findAllByOrderByPublicationdate();
     }
 
     @Override
@@ -49,38 +72,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> findAllByOrderByOurPriceAsc() {
-        return bookRepository.findAllByOrderByOurPriceAsc();
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByTitleAsc(Genre genre) {
-        return bookRepository.findByGenreOrderByTitleAsc(genre);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByAuthorAsc(Genre genre) {
-        return bookRepository.findByGenreOrderByAuthorAsc(genre);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByPublicationDateAsc(Genre genre) {
-        return bookRepository.findByGenreOrderByPublicationDateAsc(genre);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByRatingAsc(Genre genre) {
-        return bookRepository.findByGenreOrderByRatingAsc(genre);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByRatingDesc(Genre genre) {
-        return bookRepository.findByGenreOrderByRatingDesc(genre);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByOurPriceAsc(Genre genre) {
-        return bookRepository.findByGenreOrderByOurPriceAsc(genre);
+    public List<Book> findAllByOrderByPriceAsc() {
+        return bookRepository.findAllByOrderByPriceAsc();
     }
 
     @Override
@@ -94,8 +87,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> findByTopsellerOrderByPublicationDateAsc(Boolean topseller) {
-        return bookRepository.findByTopsellerOrderByPublicationDateAsc(topseller);
+    public List<Book> findByTopsellerOrderByPublicationdate(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByPublicationdate(topseller);
     }
 
     @Override
@@ -109,138 +102,56 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> findByTopsellerOrderByOurPriceAsc(Boolean topseller) {
-        return bookRepository.findByTopsellerOrderByOurPriceAsc(topseller);
+    public List<Book> findByTopsellerOrderByPriceAsc(Boolean topseller) {
+        return bookRepository.findByTopsellerOrderByPriceAsc(topseller);
     }
 
     @Override
-    public List<Book> findByGenreAndTopsellerOrderByTitleAsc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByTitleAsc(genre, topseller);
+    public List<String> findDistinctLanguageBy(){
+        return bookRepository.findDistinctLanguageBy();
     }
-
     @Override
-    public List<Book> findByGenreAndTopsellerOrderByAuthorAsc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByAuthorAsc(genre, topseller);
+    public List<String> findDistinctCategoryBy(){
+        return bookRepository.findDistinctCategoryBy();
     }
-
     @Override
-    public List<Book> findByGenreAndTopsellerOrderByPublicationDateAsc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByPublicationDateAsc(genre, topseller);
+    public List<String>findDistinctFormatBy(){
+        return bookRepository.findDistinctFormatBy();
     }
 
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByRatingAsc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByRatingAsc(genre, topseller);
-    }
 
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByRatingDesc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByRatingDesc(genre, topseller);
-    }
 
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByOurPriceAsc(Genre genre, Boolean topseller) {
-        return bookRepository.findByGenreAndTopsellerOrderByOurPriceAsc(genre, topseller);
-    }
 
-    @Override
-    public List<Book> findByCategoryOrderByTitleAsc(Category category) {
-        return bookRepository.findByCategoryOrderByTitleAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryOrderByAuthorAsc(Category category) {
-        return bookRepository.findByCategoryOrderByAuthorAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryOrderByPublicationDateAsc(Category category) {
-        return bookRepository.findByCategoryOrderByPublicationDateAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryOrderByRatingAsc(Category category) {
-        return bookRepository.findByCategoryOrderByRatingAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryOrderByRatingDesc(Category category) {
-        return bookRepository.findByCategoryOrderByRatingDesc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryOrderByOurPriceAsc(Category category) {
-        return bookRepository.findByCategoryOrderByOurPriceAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByTitleAsc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByTitleAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByAuthorAsc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByAuthorAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByPublicationDateAsc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByPublicationDateAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByRatingAsc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByRatingAsc(category);
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByRatingDesc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByRatingDesc(category);
-
-    }
-
-    @Override
-    public List<Book> findByCategoryAndTopsellerOrderByOurPriceAsc(Category category) {
-        return bookRepository.findByCategoryAndTopsellerOrderByOurPriceAsc(category);
-    }
-
-    public double getAverageRating (Long id) {
+    public double getAverageRating(Long id) {
 
         double totalRating = 0.0;
         double numberOfReviews;
+        double averageRating;
 
         Book book = bookRepository.findBookById(id);
         List<Review> reviews = book.getReviewsList();
 
-        numberOfReviews = (double)reviews.size();
+        numberOfReviews = (double) reviews.size();
 
-        for( Review review: reviews ){
-            totalRating += (double)review.getRating();
+        for (Review review : reviews) {
+            totalRating += (double) review.getRating();
         }
 
-        if(numberOfReviews==0.0){
-            return 0.0;
-        } else{
-            return Math.round(totalRating/(numberOfReviews)*100)/100;
+        if (numberOfReviews == 0.0) {
+            averageRating = 0.0;
+        } else {
+            averageRating = Math.round(totalRating / (numberOfReviews) * 100) / 100;
         }
+
+        return averageRating;
     }
 
-    public int getNumberOfReviews (Long id) {
+    public int getNumberOfReviews(Long id) {
 
         Book book = bookRepository.findBookById(id);
         List<Review> reviews = book.getReviewsList();
 
         return reviews.size();
-    }
-
-    @Override
-    public List<Book> searchTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public List<Book> searchAuthor(String author) {
-        return null;
     }
 
 
