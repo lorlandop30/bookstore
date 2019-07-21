@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,9 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private BigDecimal totalPrice;
+
+    private String savedCartName;
+    private Date dateAdded;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -32,6 +36,14 @@ public class ShoppingCart {
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
+    }
+
+    public String getSavedCartName() {
+        return savedCartName;
+    }
+
+    public void setSavedCartName(String savedCartName) {
+        this.savedCartName = savedCartName;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {

@@ -55,12 +55,12 @@ public class IndexController {
         this.userPaymentService=userPaymentService;
         this.userShippingService=userShippingService;
     }
-
+/*
     @RequestMapping("/")
     public String index() {
         return "index";
     }
-
+/
 
     @RequestMapping("/login")
     public String login(Model model) {
@@ -76,7 +76,7 @@ public class IndexController {
 
         return "bookshelf";
     }
-
+*/
     @RequestMapping("/bookDetail")
     public String bookDetail(
             @PathParam("id") Long id, Model model, Principal principal
@@ -87,7 +87,7 @@ public class IndexController {
             model.addAttribute("user", user);
         }
 
-        Book book = bookService.findBookById(id);
+        Book book = bookService.findOne(id);
 
         model.addAttribute("book", book);
 
@@ -111,7 +111,7 @@ public class IndexController {
 
         return "bookDetail";
     }
-
+/*
     @RequestMapping("/forgetPassword")
     public String forgetPassword(
             HttpServletRequest request,
@@ -149,7 +149,7 @@ public class IndexController {
 
         return "MyAccount";
     }
-
+*/
     @PostMapping("/newUser")
     public String newUserPost(
             HttpServletRequest request,

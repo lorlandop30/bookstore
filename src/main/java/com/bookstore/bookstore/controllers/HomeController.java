@@ -1,7 +1,6 @@
 package com.bookstore.bookstore.controllers;
 
 import com.bookstore.bookstore.models.Book;
-import com.bookstore.bookstore.security.PasswordResetToken;
 import com.bookstore.bookstore.services.BookService;
 import com.bookstore.bookstore.services.UserSecurityService;
 import com.bookstore.bookstore.services.UserService;
@@ -46,7 +45,7 @@ public class HomeController {
     @RequestMapping("/login")
         public String login(Model model){
         model.addAttribute("classActiveLogin", true);
-        return "account";
+        return "MyAccount";
     }
 
     @RequestMapping("/forgetPassword")

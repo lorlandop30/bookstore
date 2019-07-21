@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Geek Text</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+</head>
+
+<body background="/img/book_img18.jpg">
+
+<div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand disabled" href="/">Geek Text</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Search form -->
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
+                </button>
+            </form>
+
+            <ul class="navbar-nav mr-auto">
+            </ul>
+
+            <div >
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li>
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a class="nav-link"  href="/MyProfile">My Account <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+
+<div class="container login">
+
+
+
+    <div class="row" style="margin-top: 10px;">
+        <form data-th-action="@{/checkout}" method="post">
+
+<!--            Left panel-->
+            <div class="col-xs-4">
+                <div class="panel panel-default"></div>
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-warning btn-block">Place your order</button>
+                        <p style="font-size: smaller;">By placing your order, you agree to Geek Books'
+                        <a href="#">privacy</a> notice and <a href="#">conditions<</a> of use. </p>
+                        <hr/>
+                        <h3>Order Summary</h3>
+                        <div class="row">
+                            <div class="col-xs-7 text-left">
+                                Total before tax:
+                            </div>
+                            <div class="col-xs-5 text-right">
+                                $<span data-th-text="${shoppingCart.totalPrice}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 text-left">
+                                <h3 style="color:darkred;"><strong>Order Total: </strong> </h3>
+                            </div>
+                            <div class="col-xs-5 text-right">
+                                <h3><strong style="color:darkred;">$<span
+                                data-th-with="total=${shoppingCart.totalPrice+shoppingCart.totalPrice*0.06}" data-th-text="${#numbers.formatDecimal(total, 0, 2)"></span></strong> </h3>
+                            </div>
+                        </div>
+                        <div class="panel-footer">Shipping and handling not applied.</div>
+                    </div>
+            </div>
+
+<!--            Checkout Info-->
+            <div class="col-xs-8">
+                <div data-th-if="${missingRequiredfield}">
+                    <h5 class="alert alert-warning">There are missing fields. Field with * is required.</h5>
+                </div>
+
+                <div class="panel-group" id="accordion">
+                    <!--1. Shipping Address-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#shippingInfo">
+                                    1. Shipping Address
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="shippingInfo" class="panel-collapse collapse" data-th-classappend="${classActiveShipping}? 'in'">
+                            <div class="panel-body">
+                                <table class="table" data-th-if="${not emptyShippingList}">
+                                    <thead>
+                                        <tr>
+                                            <th>Available Shipping Address</th>
+                                            <th>Operations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-th-each="userShipping : ${userShippingList}">
+                                            <td data-th-text="${userShipping.userShippingStreet1}+' '
+                                            +${userShipping.userShippingStreet2}+', '+${userShipping.userShippingCity}
+                                            +', '+${userShipping.userShippingState}"></td>
+                                            <td>
+                                                <a data-th-href="${/setShippingAddress(userShippingId=$puserShipping.id})}">
+                                                    use this address
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="form-group">
+                                    <label for="shippingName">* Name</label>
+                                    <input type="text" class="form-control" id="shippingName" placeholder="Receiver Name"
+                                           name="shippingAddressName" data-th-value="${shippingAddress.shippingAddressName}" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="shippingStreet">* Street address</label>
+                                    <input type="text" class="form-control" id="shippingStreet" placeholder="Street Address 1"
+                                           name="shippingAddressStreet1" data-th-value="${shippingAddress.shippingAddressStreet1}" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control"
+                                           placeholder="Street Address 2"
+                                           name="shippingAddressStreet2" data-th-value="${shippingAddress.shippingAddressStreet2}" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingCity">* City</label> <input type="text"
+                                                                                            class="form-control" id="shippingCity"
+                                                                                            placeholder="Shipping City" th:name="shippingAddressCity"
+                                                                                            required="required"
+                                                                                            th:value="${shippingAddress.shippingAddressCity}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingState">* State</label> <select
+                                                id="shippingState" class="form-control"
+                                                th:name="shippingAddressState"
+                                                th:value="${shippingAddress.shippingAddressState}"
+                                                required="required">
+                                            <option value="" disabled="disabled">Please
+                                                select an option</option>
+                                            <option th:each="state : ${stateList}" th:text="${state}"
+                                                    th:selected="(${shippingAddress.shippingAddressState}==${state})"></option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingZipcode">* Zipcode</label> <input
+                                                type="text" class="form-control" id="shippingZipcode"
+                                                placeholder="Shipping Zipcode"
+                                                th:name="shippingAddressZipcode" required="required"
+                                                th:value="${shippingAddress.shippingAddressZipcode}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" data-parent="#accordion" class="btn btn-warning pull-right"
+                                   href="#paymentInfo">Next</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="container social_media">
+    <a href=""><i class="fab fa-facebook-f px-2"></i></a>
+    <a href=""><i class="fab fa-twitter"></i></a>
+    <a href=""><i class="fab fa-instagram px-2"></i></a>
+    <a href=""><i class="fab fa-linkedin-in"></i></a>
+</div>
+
+<div class="container fix">
+    <div class="row last border-top border-bottom">
+        <div class="col-sm-1  "></div>
+        <div class="col-sm-4 address border-right p-3">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>5200 nw 7st,Miami,FL 33012</p>
+        </div>
+
+        <div class="col-sm-3 phone p-3">
+            <i class="fas fa-mobile-alt"></i>
+            <p>(+1) 305-234-6754</p>
+
+        </div>
+
+        <div class="col-sm-4 days border-left p-3">
+            <i class="far fa-clock"></i>
+            <p>Monday-Friday (8:00 am- 5:00 pm)</p>
+
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+</body>
+</html>

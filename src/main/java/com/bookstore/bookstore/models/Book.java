@@ -1,8 +1,9 @@
 package com.bookstore.bookstore.models;
 
-import javax.persistence.*;
-
 import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import java.util.List;
 
 import java.util.List;
 
@@ -199,10 +200,6 @@ public class Book implements Comparable <Book> {
         this.listPrice = listPrice;
     }
 
-    public double getOurPrice() {
-        return ourPrice;
-    }
-
     public void setOurPrice(double ourPrice) {
         this.ourPrice = ourPrice;
     }
@@ -222,21 +219,6 @@ public class Book implements Comparable <Book> {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public MultipartFile getBookImage() {
-        return bookImage;
-    }
-
-    public void setBookImage(MultipartFile bookImage) {
-        this.bookImage = bookImage;
-    }
-
-    @Column(columnDefinition="text")
-    private String description;
-    private int inStockNumber;
-
-    @Transient
-    private MultipartFile bookImage;
 
     @OneToMany(mappedBy = "book")
     @JsonIgnore

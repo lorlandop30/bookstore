@@ -27,8 +27,22 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, updatable = false)
     private String email;
     private String phone;
-
     private boolean enabled=true;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private ShoppingCart shoppingCart;
+
+    @OneToOne
+    @JoinColumn(name = "id")
+    private SavedCartList savedCartList;
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
@@ -64,7 +78,6 @@ public class User implements UserDetails {
         this.email = email;
         this.phone = phone;
     }
-
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -160,6 +173,14 @@ public class User implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public SavedCartList getSavedCartList() {
+        return savedCartList;
+    }
+
+    public void setSavedCartList(SavedCartList savedCartList) {
+        this.savedCartList = savedCartList;
     }
 
     @Override

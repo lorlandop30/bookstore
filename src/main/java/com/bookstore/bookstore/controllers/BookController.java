@@ -4,7 +4,6 @@ import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Genre;
 import com.bookstore.bookstore.repositories.BookRepository;
 import com.bookstore.bookstore.services.BookService;
-import com.bookstore.bookstore.services.BookServiceImpl;
 import com.bookstore.bookstore.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,7 +75,7 @@ public class BookController {
 
         Genre genre = new Genre();
         genre.setID(genreId);
-        List<Book> books = bookRepository.findByGenre(genre);
+        List<Book> books = bookRepository.findAllById(genreId);
         System.out.println(books);
         model.addAttribute("bookList", books);
         return "bookshelf";
