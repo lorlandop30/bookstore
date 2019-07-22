@@ -1,5 +1,7 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,7 +31,7 @@
 
 </head>
 <body>
-<div class="container">
+<div class=" container">
     <!-- Static navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-success">
         <a class="navbar-brand disabled" href="/">Geek Text</a>
@@ -40,10 +42,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Search form -->
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
-                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
-                </button>
+            <form class="form-inline my-2 my-lg-0" th:action="searchTitle" th:object="${formobject}">
+                <input class="form-control mr-sm-2" type="search" placeholder="Book title" th:field="*{title}" aria-label="Search">
+                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search</button>
             </form>
             <ul class="navbar-nav mr-auto">
             </ul>
@@ -70,79 +71,127 @@
 
 </div>
 
-<div class="container bookshelf">
+<div class=" container bookshelf">
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col col-sm-2 px-0">
+            <div class=" container border sorting px-0 py-2">
+                <form action="#" th:action="@{formbookshelf}" th:object="${formobject}" method="get" class="form-inline my-2 my-lg-0">
+
+                    <div class="container">
+                        <p class="sorting_header mb-1">Sort by:</p>
+                        <select th:field="*{sortColumn}">
+                            <option
+                                    th:each="sc : ${sortColumns}"
+                                    th:value="${sc}"
+                                    th:text="${sc}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="container mt-1">
+                        <input type="checkbox" th:field="*{topseller}"/> Show Top Sellers Only
+                        <input type="hidden" th:field="*{genreId}" />
+                        <input type="hidden" th:field="*{categoryId}" />
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Language:</p>
+                        <select th:field="*{language}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="l : ${languageList}"
+                                    th:value="${l}"
+                                    th:text="${l}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Category:</p>
+                        <select th:field="*{category}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="cl : ${categoryList}"
+                                    th:value="${cl}"
+                                    th:text="${cl}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Format:</p>
+                        <select th:field="*{format}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="fl : ${formatList}"
+                                    th:value="${fl}"
+                                    th:text="${fl}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mt-1">
+                        <p class="sorting_header mb-1">Price:</p>
+                        <span>Min </span><input type="text" th:field="*{minPrice}"/>
+                        <span>Max </span><input type="text" th:field="*{maxPrice}"/>
+                    </div>
+
+                    <div class="container mt-3">
+                        <p class="sorting_header mb-1">Review rating:</p>
+                        <span style="display: block"><input type="checkbox" th:field="*{fiveStars}"/> 5.0</span>
+                        <span style="display: block"><input type="checkbox" th:field="*{fourStars}"/> 4.0</span>
+                        <span style="display: block"><input type="checkbox" th:field="*{threeStars}"/> 3.0</span>
+                        <span style="display: block"><input type="checkbox" th:field="*{twoStars}"/> 2.0</span>
+                        <span style="display: block"><input type="checkbox" th:field="*{oneStars}"/> 1.0</span>
+                    </div>
+
+                    <button class="btn btn-dark btn-block mx-1 my-3" type="submit">Submit</button>
+                </form>
+            </div>
+
+        </div>
+        <div class="col col-sm-10">
             <h2 class="section-headline">
                 <h2 class="section-headline">
                     <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Books'"></span>
                 </h2>
             </h2>
 
+            <div class="row mt-0 pt-0" style="margin-top: 60px;">
+                <div class="col-xs-9 col-xs-offset-3">
 
-    <div class="row mt-0 pt-0" style="margin-top: 60px;">
-            <div th:if="${emptyList}">
-                <h5 style="font-style: italic;">Oops, no result is found. Try something else or try again later.</h5>
-            </div>
+                    <div th:if="${emptyList}">
+                        <h5 style="font-style: italic;">Oops, no result is found. Try something else or try again later.</h5>
+                    </div>
 
-            <div class="container" id="bookList">
-                <div class="book-item" data-th-each="book : ${bookList}">
-                    <div class="container mb-3">
-                        <div class="card" style="width: 20rem;">
-                            <a th:href="@{/bookDetail?id=}+${book.id}"><img class="card-img-top shelf-book" th:src="@{/img/books/}+${book.id}+'.png'" alt="..."></a>
-                            <div class="card-body">
-                                <h4 th:text="${book.title}"></h4>
-                                <span class="card-text" th:text="${book.author}"></span>
-                                <span class="card-text" th:text="${#strings.capitalize(book.format)}"></span>
-                                <span class="card-text" style="display: inline" th:text="${book.numberOfPages}"></span><span> pages</span>
-                                <span class="card-text" style="font-size:x-large;color:#db3208;">$<span th:text="${#numbers.formatDecimal(book.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
-                                <span class="card-text" style="text-decoration: line-through;">$<span th:text="${#numbers.formatDecimal(book.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
+                    <div class="container" id="bookList">
+                        <div class="card-deck">
+                            <div class="book-item" data-th-each="book : ${bookList}">
+                                <div class="card mb-2">
+                                    <a th:href="@{/bookDetail?id=}+${book.id}"><img class="card-img-top shelf-book" th:src="@{/img/books/}+${book.id}+'.png'" alt="..."></a>
+                                    <div class="card-body">
+                                        <h4 th:text="${book.title}"></h4>
+                                        <span class="card-text" th:text="${book.author}"></span>
+                                        <span class="card-text" th:text="${#strings.capitalize(book.format)}"></span>
+                                        <span class="card-text" style="display: inline" th:text="${book.numberOfPages}"></span><span> pages</span>
+                                        <span class="card-text" style="font-size:x-large;color:#db3208;">$<span th:text="${#numbers.formatDecimal(book.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
+                                        <span class="card-text" style="text-decoration: line-through;">$<span th:text="${#numbers.formatDecimal(book.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-<!--            <table border="0" id="bookList">-->
-<!--                <thead><tr><th></th></tr></thead>-->
-<!--                <tbody>-->
-<!--                <tr class="book-item" data-th-each="book : ${bookList}">-->
-<!--                    <td>-->
-<!--                        <div th:if="${book != null}">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-xs-1">-->
-<!--&lt;!&ndash;                                this need to be changed to the local pictures address&ndash;&gt;-->
-<!--                                    <a th:href="@{/bookDetail?id=}+${book.id}"><img class="img-responsive shelf-book" th:src="@{/img/books/}+${book.id}+'.png'"  /></a>-->
-<!--                                </div>-->
-<!--                                <div class="col-xs-9">-->
-<!--                                    <h4 th:text="${book.title}"></h4>-->
-<!--                                    <span th:text="${book.publicationDate}"></span>-->
-<!--                                    <span th:text="${book.author}"></span>-->
-<!--                                    <span th:text="${#strings.capitalize(book.format)}"></span>-->
-<!--                                    <span th:text="${book.numberOfPages}"><span> pages</span></span>-->
-<!--                                    <span style="font-size:x-large;color:#db3208;">$<span-->
-<!--                                            th:text="${#numbers.formatDecimal(book.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>-->
-
-<!--                                    <span style="text-decoration: line-through;">$<span-->
-<!--                                            th:text="${#numbers.formatDecimal(book.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>-->
-
-<!--                                    <p th:text="${#strings.abbreviate(book.description, 500)}"></p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-
+        </div>
     </div>
-</div>
-    </div>
-</div>
 
 
 
-<div class="container social_media">
+<div class="container social_media mt-2">
     <a href=""><i class="fab fa-facebook-f px-2"></i></a>
     <a href=""><i class="fab fa-twitter"></i></a>
     <a href=""><i class="fab fa-instagram px-2"></i></a>
@@ -175,5 +224,5 @@
 
 
 
-</body>
+</div></body>
 </html>

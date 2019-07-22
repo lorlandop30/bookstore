@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import sun.plugin2.main.client.MacOSXMozillaServiceDelegate;
 
 import javax.websocket.server.PathParam;
-import java.io.Console;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +57,7 @@ public class RatingController {
     @RequestMapping(value = "/addReview", method = RequestMethod.POST)
     public String addReview(Model model, Principal principal, @ModelAttribute("review") Review review,
                             @RequestParam(value = "showName", required = false) String showname,
-                            @RequestParam(value = "score", required = false) int score,
+                            @RequestParam(value = "score", required = false) double score,
                             @RequestParam(value = "bookId", required = false) Long id){
 
         User user = userService.findByUsername(principal.getName());

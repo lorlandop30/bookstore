@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.sun.deploy.util.SessionState.save;
-
 @Service
 public class ReviewService{
 
     private ReviewRepository reviewRepository;
+    private BookService bookService;
 
 
     @Autowired
@@ -42,12 +41,14 @@ public class ReviewService{
             review.setShownickname(false);
         }
 
+        book.setRating(((book.getRating()*(book.getReviewsList().size()))+review.getRating())/((book.getReviewsList().size())+1));
+
         review.setBookisbn(book.getIsbn());
         review.setUser(user);
         review.setBook(book);
 
-        reviewRepository.save(review);
 
+        reviewRepository.save(review);
 
    }
 

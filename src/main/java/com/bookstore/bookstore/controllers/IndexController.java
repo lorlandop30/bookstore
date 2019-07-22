@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import com.bookstore.bookstore.repositories.BookRepository;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -49,15 +50,27 @@ public class IndexController {
     ) {
         this.userService = userService;
         this.userSecurityService = userSecurityService;
-        this.mailSender=mailSender;
-        this.mailConstructor=mailConstructor;
-        this.bookService=bookService;
-        this.userPaymentService=userPaymentService;
-        this.userShippingService=userShippingService;
+        this.mailSender = mailSender;
+        this.mailConstructor = mailConstructor;
+        this.bookService = bookService;
+        this.userPaymentService = userPaymentService;
+        this.userShippingService = userShippingService;
     }
 /*
     @RequestMapping("/")
-    public String index() {
+    public String index(@RequestParam(value = "sortColumn", required = false) String sort,
+                        @RequestParam(value = "topseller", required = false) Boolean topseller,
+                        Model model, Principal principal) {
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
         return "index";
     }
 /
@@ -70,9 +83,208 @@ public class IndexController {
     }
 
     @RequestMapping("/bookshelf")
-    public String bookshelf(Model model) {
+    public String bookshelf(@RequestParam(value = "sortColumn", required = false) String sort,
+                            @RequestParam(value = "topseller", required = false) Boolean topseller,
+                            Model model, Principal principal) {
+
         List<Book> bookList = bookService.findAll();
+        List<String> languageList = bookService.findDistinctLanguageBy();
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+        List<String> formatList = bookService.findDistinctFormatBy();
+
         model.addAttribute("bookList", bookList);
+        model.addAttribute("languageList", languageList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("formatList", formatList);
+
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+        return "bookshelf";
+    }
+
+    @RequestMapping(value = "/formbookshelf")
+    public String bookshelf(@RequestParam(value = "topseller", required = false) Boolean topseller,
+                            @RequestParam(value = "sortColumn", required = false) String sort,
+                            @RequestParam(value = "fiveStars", required = false) Boolean fiveStars,
+                            @RequestParam(value = "fourStars", required = false) Boolean fourStars,
+                            @RequestParam(value = "threeStars", required = false) Boolean threeStars,
+                            @RequestParam(value = "twoStars", required = false) Boolean twoStars,
+                            @RequestParam(value = "oneStars", required = false) Boolean oneStars,
+                            @RequestParam(value = "minPrice", required = false) double minPrice,
+                            @RequestParam(value = "maxPrice", required = false) double maxPrice,
+                            @RequestParam(value = "language", required = false) String language,
+                            @RequestParam(value = "category", required = false) String category,
+                            @RequestParam(value = "format", required = false) String format,
+                            Model model, Principal principal) {
+
+        List<Book> bookList = bookService.findAll(); //Initializing to full list
+
+
+        /*   Sorting books based on user selection */
+
+        if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
+            sort = "title";
+            if (topseller == null || !topseller) {
+                    bookList = bookService.findAllByOrderByTitleAsc();
+                } else {
+                    bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
+                }
+
+        }  else if ("author".equalsIgnoreCase(sort)) {
+            if (topseller == null || !topseller) {
+                    bookList = bookService.findAllByOrderByAuthorAsc();
+                } else {
+                    bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
+                }
+        } else if ("date".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByPublicationdate();
+            } else {
+                bookList = bookService.findByTopsellerOrderByPublicationdate(topseller);
+            }
+
+        } else if ("rating asc".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByRatingAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByRatingAsc(topseller);
+            }
+
+        } else if ("rating desc".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByRatingDesc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByRatingDesc(topseller);
+            }
+
+        } else if ("price".equalsIgnoreCase(sort)){
+            if (topseller == null || !topseller) {
+                bookList = bookService.findAllByOrderByPriceAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByPriceAsc(topseller);
+            }
+
+        } else {
+                model.addAttribute("emptyList", Boolean.TRUE);
+        }
+
+        /*   Filtering books based on user selection */
+
+        /*   RATING FILTER */
+
+        if(!(fiveStars==null && fourStars==null && threeStars==null && twoStars==null && oneStars==null)){
+            if(fiveStars==null){
+                bookList.removeIf(book -> (book.getRating()==5.0));
+            }
+            if(fourStars==null){
+                bookList.removeIf(book -> (book.getRating()>=4.0 && book.getRating()<5.0));
+            }
+            if(threeStars==null){
+                bookList.removeIf(book -> (book.getRating()>=3.0 && book.getRating()<4.0));
+            }
+            if(twoStars==null){
+                bookList.removeIf(book -> (book.getRating()>=2.0 && book.getRating()<3.0));
+            }
+            if(oneStars==null){
+                bookList.removeIf(book -> (book.getRating()>=1.0 && book.getRating()<2.0));
+            }
+            bookList.removeIf(book -> (book.getRating()<1.0));
+
+        }
+
+        /*   PRICE FILTER */
+
+        if(minPrice>0.0){
+            bookList.removeIf(book -> (book.getOurPrice()<minPrice));
+        }
+
+        if(maxPrice>0.0){
+            bookList.removeIf(book -> (book.getOurPrice()>maxPrice));
+        }
+
+        /* LANGUAGES FILTER */
+
+        if(!language.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getLanguage().equalsIgnoreCase(language)));
+
+        /* CATEGORY FILTER */
+
+        if(!category.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getCategory().equalsIgnoreCase(category)));
+
+        /* FORMAT FILTER */
+
+        if(!format.equalsIgnoreCase("nochoice"))
+            bookList.removeIf(book -> !(book.getFormat().equalsIgnoreCase(format)));
+
+
+
+        List<String> languageList = bookService.findDistinctLanguageBy();
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+        List<String> formatList = bookService.findDistinctFormatBy();
+
+        model.addAttribute("languageList", languageList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("formatList", formatList);
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+
+        return "bookshelf";
+    }
+
+    @RequestMapping("/searchTitle")
+    public String searchTitle(@RequestParam("title") String title,
+                              @RequestParam(value = "topseller", required = false) Boolean topseller,
+                              @RequestParam(value = "sortColumn", required = false) String sort,
+                              Model model, Principal principal) {
+
+        List<Book> bookList;
+
+        if(title.equalsIgnoreCase("")){
+            bookList = bookService.findAll();
+        } else{
+            bookList = bookService.findByTitle(title);
+        }
+
+
+        List<String> languageList = bookService.findDistinctLanguageBy();
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+        List<String> formatList = bookService.findDistinctFormatBy();
+
+        model.addAttribute("languageList", languageList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("formatList", formatList);
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
 
         return "bookshelf";
     }
@@ -81,7 +293,7 @@ public class IndexController {
     public String bookDetail(
             @PathParam("id") Long id, Model model, Principal principal
     ) {
-        if(principal != null) {
+        if (principal != null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
@@ -91,21 +303,20 @@ public class IndexController {
 
         model.addAttribute("book", book);
 
-        List<Integer> qtyList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+        List<Integer> qtyList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         model.addAttribute("qtyList", qtyList);
         model.addAttribute("qty", 1);
 
-        model.addAttribute("averageRating",bookService.getAverageRating(id));
+        model.addAttribute("averageRating", bookService.getAverageRating(id));
 
         model.addAttribute("bookReviewsList", book.getReviewsList());
 
         model.addAttribute("numberOfReviews", bookService.getNumberOfReviews(id));
 
-        if (bookService.getNumberOfReviews(id)== 0) {
+        if (bookService.getNumberOfReviews(id) == 0) {
             model.addAttribute("NoReviews", true);
-        }
-        else{
+        } else {
             model.addAttribute("Reviews", true);
         }
 
@@ -138,7 +349,7 @@ public class IndexController {
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
 
-        String appUrl = "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         SimpleMailMessage newEmail = mailConstructor.constuctResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 
@@ -172,7 +383,6 @@ public class IndexController {
         }
 
 
-
         User user = new User();
         user.setUsername(userName);
         user.setEmail(userEmail);
@@ -192,9 +402,9 @@ public class IndexController {
 
         userService.createPasswordRestTokenForUser(user, token);
 
-        String appUrl= "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
-        SimpleMailMessage email=mailConstructor.constuctResetTokenEmail(appUrl, request.getLocale(), token, user, password );
+        SimpleMailMessage email = mailConstructor.constuctResetTokenEmail(appUrl, request.getLocale(), token, user, password);
         mailSender.send(email);
 
         model.addAttribute("emailSent", true);
@@ -286,7 +496,7 @@ public class IndexController {
     @RequestMapping("/addNewCreditCard")
     public String addNewCreditCard(
             Model model, Principal principal
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
 
@@ -311,12 +521,12 @@ public class IndexController {
         return "MyProfile";
     }
 
-    @RequestMapping(value="/addNewCreditCard", method= RequestMethod.POST)
+    @RequestMapping(value = "/addNewCreditCard", method = RequestMethod.POST)
     public String addNewCreditCard(
             @ModelAttribute("userPayment") UserPayment userPayment,
             @ModelAttribute("userBilling") UserBilling userBilling,
             Principal principal, Model model
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         userService.updateUserBilling(userBilling, userPayment, user);
 
@@ -338,7 +548,7 @@ public class IndexController {
         User user = userService.findByUsername(principal.getName());
         UserPayment userPayment = userPaymentService.findById(creditCardId);
 
-        if(!user.getId().equals(userPayment.getUser().getId()) ) {
+        if (!user.getId().equals(userPayment.getUser().getId())) {
             return "badRequestPage";
         } else {
             model.addAttribute("user", user);
@@ -368,7 +578,7 @@ public class IndexController {
         User user = userService.findByUsername(principal.getName());
         UserShipping userShipping = userShippingService.findById(shippingAddressId);
 
-        if(user.getId() != userShipping.getUser().getId()) {
+        if (user.getId() != userShipping.getUser().getId()) {
             return "badRequestPage";
         } else {
             model.addAttribute("user", user);
@@ -391,7 +601,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping(value="/setDefaultPayment", method=RequestMethod.POST)
+    @RequestMapping(value = "/setDefaultPayment", method = RequestMethod.POST)
     public String setDefaultPayment(
             @ModelAttribute("defaultUserPaymentId") Long defaultPaymentId, Principal principal, Model model
     ) {
@@ -410,7 +620,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping(value="/setDefaultShippingAddress", method=RequestMethod.POST)
+    @RequestMapping(value = "/setDefaultShippingAddress", method = RequestMethod.POST)
     public String setDefaultShippingAddress(
             @ModelAttribute("defaultShippingAddressId") Long defaultShippingId, Principal principal, Model model
     ) {
@@ -431,11 +641,11 @@ public class IndexController {
     @RequestMapping("/removeCreditCard")
     public String removeCreditCard(
             @ModelAttribute("id") Long creditCardId, Principal principal, Model model
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         UserPayment userPayment = userPaymentService.findById(creditCardId);
 
-        if(!user.getId().equals(userPayment.getUser().getId()) ) {
+        if (!user.getId().equals(userPayment.getUser().getId())) {
             return "badRequestPage";
         } else {
             model.addAttribute("user", user);
@@ -455,11 +665,11 @@ public class IndexController {
     @RequestMapping("/removeUserShipping")
     public String removeUserShipping(
             @ModelAttribute("id") Long userShippingId, Principal principal, Model model
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         UserShipping userShipping = userShippingService.findById(userShippingId);
 
-        if(user.getId() != userShipping.getUser().getId()) {
+        if (user.getId() != userShipping.getUser().getId()) {
             return "badRequestPage";
         } else {
             model.addAttribute("user", user);
@@ -479,7 +689,7 @@ public class IndexController {
     @RequestMapping("/addNewShippingAddress")
     public String addNewShippingAddress(
             Model model, Principal principal
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
 
@@ -501,11 +711,11 @@ public class IndexController {
         return "MyProfile";
     }
 
-    @RequestMapping(value="/addNewShippingAddress", method=RequestMethod.POST)
+    @RequestMapping(value = "/addNewShippingAddress", method = RequestMethod.POST)
     public String addNewShippingAddressPost(
             @ModelAttribute("userShipping") UserShipping userShipping,
             Principal principal, Model model
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         userService.updateUserShipping(userShipping, user);
 
