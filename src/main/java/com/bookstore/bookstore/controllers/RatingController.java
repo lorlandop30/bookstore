@@ -54,24 +54,56 @@ public class RatingController {
         return "rating";
     }
 
+
     @RequestMapping(value = "/addReview", method = RequestMethod.POST)
-    public String addReview(Model model, Principal principal, @ModelAttribute("review") Review review,
+    public String addReview(Model model, Principal principal,
+                            @RequestParam(value = "sortColumn", required = false) String sort,
+                            @RequestParam(value = "topseller", required = false) Boolean topseller,
+                            @ModelAttribute("review") Review review,
                             @RequestParam(value = "showName", required = false) String showname,
                             @RequestParam(value = "score", required = false) double score,
-                            @RequestParam(value = "bookId", required = false) Long id){
+                            @RequestParam(value = "bookId", required = false) Long id) {
 
         User user = userService.findByUsername(principal.getName());
 
         Book book = bookService.findBookById(id);
 
-        model.addAttribute("user", user);
-        model.addAttribute("book", book);
         review.setUsername(showname);
         review.setRating(score);
 
         reviewService.addReview(review, user, book);
 
-        return "index";
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("user", user);
+        }
+
+        List<Integer> qtyList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        model.addAttribute("qtyList", qtyList);
+        model.addAttribute("qty", 1);
+
+        model.addAttribute("averageRating", bookService.getAverageRating(id));
+
+        model.addAttribute("bookReviewsList", bookService.getReviewsList(id));
+
+        model.addAttribute("numberOfReviews", bookService.getNumberOfReviews(id));
+
+        if (bookService.getNumberOfReviews(id) == 0) {
+            model.addAttribute("NoReviews", true);
+        } else {
+            model.addAttribute("Reviews", true);
+        }
+
+        model.addAttribute("book", book);
+
+        return "bookDetail";
+
     }
 
 

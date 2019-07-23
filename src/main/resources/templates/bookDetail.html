@@ -34,9 +34,12 @@
 
     <!-- ************* BOOK DETAILS SECTION ************* -->
 
-    <div class="container">
+    <section id="common_header">
+        <div class="container" id="first_heading">
+            <p class="mb-1 pt-1"><spam id="free_shipping">FREE SHIPPING</spam> US orders over $50</p>
+        </div>
         <!-- Static navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <nav class="navbar navbar-expand-lg navbar-light bg-success mb-0">
             <a class="navbar-brand disabled" href="/">Geek Text</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,46 +47,38 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Search form -->
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Book title" aria-label="Search">
-                    <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search
-                    </button>
-                </form>
-                <ul class="navbar-nav mr-auto">
-                </ul>
 
-                <div >
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
-                                    class="sr-only">(current)</span></a>
-                        </li>
-                        <li sec:authorize="isAnonymous()">
-                            <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li sec:authorize="isAuthenticated()">
-                            <a class="nav-link"  th:href="@{/MyProfile}">My Account <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li sec:authorize="isAuthenticated()">
-                            <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
-                        </li>
-                    </ul>
-                </div>
+                <a class="nav-link" href="/bookshelf">Books<span
+                        class="sr-only">(current)</span></a>
+                <ul class="navbar-nav mr-auto"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a class="nav-link" href="/login">Account <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a class="nav-link"   href="/MyProfile">My Account <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a  class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
             </div>
         </nav>
-
-    </div>
+    </section>
     <div class="container" >
         <div class="row">
             <div class="col-xs-8">
-                <h2 class="section-headline">
-                    <h2 class="section-headline">
-                        <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Books'"></span>
-                    </h2>
-                </h2>
+<!--                <h2 class="section-headline">-->
+<!--                    <h2 class="section-headline">-->
+<!--                        <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Books'"></span>-->
+<!--                    </h2>-->
+<!--                </h2>-->
 
-                <div class="container">
+                <div class="container mt-2">
                     <form th:action="@{/shoppingCart/addItem}" method="post">
                         <input hidden="hidden" th:field="*{book.id}" />
                         <div class="row">
@@ -228,7 +223,7 @@
         <a href=""><i class="fab fa-linkedin-in"></i></a>
     </div>
 
-    <div class="container fix">
+    <div class="fix">
         <div class="row last border-top border-bottom">
             <div class="col-sm-1  "></div>
             <div class="col-sm-4 address border-right p-3">

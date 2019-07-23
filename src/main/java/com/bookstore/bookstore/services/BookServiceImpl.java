@@ -120,6 +120,12 @@ public class BookServiceImpl implements BookService {
     }
 
 
+    public List<Review> getReviewsList(Long id) {
+
+        Book book = bookRepository.findBookById(id);
+        List<Review> reviews = book.getReviewsList();
+         return reviews;
+    }
 
 
     public double getAverageRating(Long id) {
