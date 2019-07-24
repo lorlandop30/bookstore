@@ -27,10 +27,6 @@
     text-align: center;
 }
 
-.reviewbtn{
-    background-color: darkgreen;
-    border-color: darkgreen;
-}
 
 .fa-user-circle{
     font-size: 2rem;
@@ -45,3 +41,4 @@
 #noReviews{
     text-align: center;
 }
+

@@ -121,7 +121,18 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findDistinctFormatBy();
     }
 
+    @Override
+    public List<String> findDistinctGenreBy() {
+        return bookRepository.findDistinctGenreBy();
+    }
 
+
+    public List<Review> getReviewsList(Long id) {
+
+        Book book = bookRepository.findBookById(id);
+        List<Review> reviews = book.getReviewsList();
+         return reviews;
+    }
 
 
     public double getAverageRating(Long id) {

@@ -37,6 +37,7 @@ public class Book implements Comparable <Book> {
     private String publicationdate;
     private String language;
     private String category;
+    private String genre;
     private int numberOfPages;
     private String format;
     private int isbn;
@@ -44,6 +45,22 @@ public class Book implements Comparable <Book> {
     private double listPrice;
     private double ourPrice;
     private boolean active=true;
+
+    public String getPublicationdate() {
+        return publicationdate;
+    }
+
+    public void setPublicationdate(String publicationdate) {
+        this.publicationdate = publicationdate;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
     @Column(columnDefinition="text")
     private String description;
@@ -215,6 +232,7 @@ public class Book implements Comparable <Book> {
     }
 
     public List<Review> getReviewsList() {
+
         return reviewsList;
     }
 

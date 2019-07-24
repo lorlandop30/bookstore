@@ -1,9 +1,6 @@
 package com.bookstore.bookstore.controllers;
 
 import com.bookstore.bookstore.models.Book;
-import com.bookstore.bookstore.models.Category;
-import com.bookstore.bookstore.models.Genre;
-import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.repositories.BookRepository;
 import com.bookstore.bookstore.services.BookService;
 import com.bookstore.bookstore.services.GenreService;
@@ -16,13 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.security.Principal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Controller
 @RequestMapping("/book")
@@ -30,16 +28,7 @@ public class BookController {
 
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
-    private GenreService genreService;
-
-    @Autowired
-    private GenreRepository genreRepository;
 
     @Autowired
     private BookService bookService;
@@ -49,6 +38,16 @@ public class BookController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addBook(Model model) {
+        Set<String> genreList = new TreeSet<>();
+        genreList.addAll(bookService.findDistinctGenreBy());
+        genreList.add("Thriller");
+        genreList.add("Textbook");
+        genreList.add("Fantasy");
+        genreList.add("History");
+        genreList.add("Science Fiction");
+        genreList.add("Biography");
+
+        model.addAttribute("genreList", genreList);
         Book book = new Book();
         model.addAttribute("book", book);
         return "addBook";
@@ -70,10 +69,10 @@ public class BookController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "addBook";
     }
 
+ 
     @RequestMapping("/genreBrowser")
     public String showGenres(Model model){
         List<Genre> genres = genreService.listGenres();
