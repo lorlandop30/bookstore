@@ -2,8 +2,6 @@ package com.bookstore.bookstore.controllers;
 
 public class BookshelfForm {
     private String sortColumn;
-    private Long genreId;
-    private Long categoryId;
     private Boolean topseller;
     private Boolean fiveStars;
     private Boolean fourStars;
@@ -12,6 +10,17 @@ public class BookshelfForm {
     private double minPrice;
     private double maxPrice;
     private String title;
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    private String genre;
+
 
     public String getTitle() {
         return title;
@@ -107,10 +116,6 @@ public class BookshelfForm {
         this.fiveStars = fiveStars;
     }
 
-    public Long getGenreId() {
-        return genreId;
-    }
-
     public Boolean getTopseller() {
         return topseller;
     }
@@ -119,17 +124,6 @@ public class BookshelfForm {
         this.topseller = topseller;
     }
 
-    public void setGenreId(Long genreId) {
-        this.genreId = genreId;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public BookshelfForm() {
     }

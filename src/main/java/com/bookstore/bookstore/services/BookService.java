@@ -1,12 +1,9 @@
 package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
-import com.bookstore.bookstore.models.Category;
-import com.bookstore.bookstore.models.Genre;
 import com.bookstore.bookstore.models.Review;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public interface BookService {
 
@@ -31,6 +28,7 @@ public interface BookService {
     List<String> findDistinctLanguageBy();
     List<String> findDistinctCategoryBy();
     List<String> findDistinctFormatBy();
+    List<String> findDistinctGenreBy();
 
     double getAverageRating (Long id);
     int getNumberOfReviews (Long id);
