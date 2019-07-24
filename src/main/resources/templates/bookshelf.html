@@ -92,8 +92,6 @@
 
                     <div class="container mb-3 mt-1">
                         <input type="checkbox" th:field="*{topseller}"/> Show Top Sellers Only
-                        <input type="hidden" th:field="*{genreId}" />
-                        <input type="hidden" th:field="*{categoryId}" />
                     </div>
 
                     <div class="container mb-3 mt-1">
@@ -104,6 +102,19 @@
                                     th:each="l : ${languageList}"
                                     th:value="${l}"
                                     th:text="${l}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="container mb-3 mt-1">
+                        <p class="sorting_header mb-1">Genre:</p>
+                        <select th:field="*{genre}">
+                            <option th:value="nochoice" th:text="Any"></option>
+                            <option
+                                    th:each="gl : ${genreList}"
+                                    th:value="${gl}"
+                                    th:text="${gl}">
                             </option>
                         </select>
 
