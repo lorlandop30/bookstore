@@ -29,16 +29,14 @@ public class Book implements Comparable <Book> {
     private String title;
     private String author;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="genre_id")
-    private Genre genre;
     private double price;
     private boolean topseller;
     private double rating;
     private String publisher;
-    private String publicationDate;
+    private String publicationdate;
     private String language;
     private String category;
+    private String genre;
     private int numberOfPages;
     private String format;
     private int isbn;
@@ -46,6 +44,22 @@ public class Book implements Comparable <Book> {
     private double listPrice;
     private double ourPrice;
     private boolean active=true;
+
+    public String getPublicationdate() {
+        return publicationdate;
+    }
+
+    public void setPublicationdate(String publicationdate) {
+        this.publicationdate = publicationdate;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
     @Column(columnDefinition="text")
     private String description;
@@ -56,25 +70,6 @@ public class Book implements Comparable <Book> {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     private List<Review> reviewsList;
-
-//    public Book(String title, String author, String publisher, String publicationDate, String language, String category, int numberOfPages, String format, int isbn, double shippingWeight, double listPrice, double ourPrice, String description, int inStockNumber) {
-//        this.title = title;
-//        this.author = author;
-//        this.publisher = publisher;
-//        this.publicationDate = publicationDate;
-//        this.language = language;
-//        this.category = category;
-//        this.numberOfPages = numberOfPages;
-//        this.format = format;
-//        this.isbn = isbn;
-//        this.shippingWeight = shippingWeight;
-//        this.listPrice = listPrice;
-//        this.ourPrice = ourPrice;
-//        this.description = description;
-//        this.inStockNumber = inStockNumber;
-//
-//    }
-
 
     public String getTitle() {
         return title;
@@ -90,14 +85,6 @@ public class Book implements Comparable <Book> {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
     }
 
     public double getPrice() {
@@ -136,11 +123,11 @@ public class Book implements Comparable <Book> {
     }
 
     public String getPublicationDate() {
-        return publicationDate;
+        return publicationdate;
     }
 
     public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
+        this.publicationdate = publicationDate;
     }
 
     public String getLanguage() {
@@ -240,6 +227,7 @@ public class Book implements Comparable <Book> {
     }
 
     public List<Review> getReviewsList() {
+
         return reviewsList;
     }
 
