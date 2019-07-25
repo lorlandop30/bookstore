@@ -29,7 +29,6 @@ public class BookstoreApplication implements CommandLineRunner {
 	public static void main(String[] args)
 	{
 		SpringApplication.run(BookstoreApplication.class, args);
-
 	}
 
 	@Override

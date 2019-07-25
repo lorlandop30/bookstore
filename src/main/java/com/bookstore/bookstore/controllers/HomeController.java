@@ -15,7 +15,7 @@ import java.util.Locale;
 
 @Controller
 public class HomeController {
-
+/*
     @Autowired
     private BookService bookService;
 
@@ -70,7 +70,7 @@ public class HomeController {
         model.addAttribute("classActiveNewUser", true);
         return "newUser";
     }
-*/
 
+*/
 }
 

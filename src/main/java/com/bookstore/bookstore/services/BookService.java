@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public interface BookService {
 
     List<Book> findAll ();
-    Optional<Book> findBookById(Long id);
-        List<Book> searchTitle(String title);
+    List<Book> searchTitle(String title);
         List<Book> searchAuthor(String author);
 
     Book findOne(Long id);

@@ -56,7 +56,7 @@ public class IndexController {
         this.userPaymentService = userPaymentService;
         this.userShippingService = userShippingService;
     }
-/*
+
     @RequestMapping("/")
     public String index(@RequestParam(value = "sortColumn", required = false) String sort,
                         @RequestParam(value = "topseller", required = false) Boolean topseller,
@@ -73,7 +73,6 @@ public class IndexController {
         }
         return "index";
     }
-/
 
     @RequestMapping("/login")
     public String login(Model model) {
@@ -331,7 +330,7 @@ public class IndexController {
 
         return "bookDetail";
     }
-/*
+
     @RequestMapping("/forgetPassword")
     public String forgetPassword(
             HttpServletRequest request,
@@ -369,7 +368,12 @@ public class IndexController {
 
         return "MyAccount";
     }
-*/
+
+    @RequestMapping("/shoppingCart")
+    public String shoppingCart(){
+        return "shoppingCart";
+    }
+
     @PostMapping("/newUser")
     public String newUserPost(
             HttpServletRequest request,
