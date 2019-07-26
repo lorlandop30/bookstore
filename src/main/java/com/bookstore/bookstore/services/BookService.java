@@ -2,6 +2,7 @@ package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Review;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,20 @@ public interface BookService {
     List<String> findDistinctFormatBy();
     List<String> findDistinctGenreBy();
 
+    List<Book> findByGenreOrderByPriceAsc(String genre, Pageable pageable);
+    List<Book> findByGenreOrderByTitleAsc(String genre, Pageable pageable);
+    List<Book> findByGenreOrderByAuthorAsc(String genre, Pageable pageable);
+    List<Book> findByGenreOrderByPublicationDateAsc(String genre, Pageable pageable);
+    List<Book> findByGenreOrderByRatingAsc(String genre, Pageable pageable);
+    List<Book> findByGenreOrderByRatingDesc(String genre, Pageable pageable);
+
+
+    List<Book> findByGenreAndTopsellerOrderByPriceAsc(String genre, Pageable pageable);
+    List<Book> findByGenreAndTopsellerOrderByTitleAsc(String genre, Pageable pageable);
+    List<Book> findByGenreAndTopsellerOrderByAuthorAsc(String genre, Pageable pageable);
+    List<Book> findByGenreAndTopsellerOrderByPublicationDateAsc(String genre, Pageable pageable);
+    List<Book> findByGenreAndTopsellerOrderByRatingAsc(String genre, Pageable pageable);
+    List<Book> findByGenreAndTopsellerOrderByRatingDesc(String genre, Pageable pageable);
     double getAverageRating (Long id);
     int getNumberOfReviews (Long id);
     List<Review> getReviewsList(Long id);

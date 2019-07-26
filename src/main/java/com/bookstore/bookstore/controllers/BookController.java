@@ -43,6 +43,9 @@ public class BookController {
         genreList.add("History");
         genreList.add("Science Fiction");
         genreList.add("Biography");
+        genreList.add("Political Satire");
+        genreList.add("Children's Books");
+        genreList.add("Reference Work");
 
         Set<String> categoryList = new TreeSet<>();
         categoryList.addAll(bookService.findDistinctCategoryBy());

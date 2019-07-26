@@ -78,7 +78,10 @@
         <div class="col col-sm-2 px-0">
             <div class=" container border sorting px-0 py-2">
                 <form action="#" th:action="@{formbookshelf}" th:object="${formobject}" method="get" class="form-inline my-2 my-lg-0">
-
+                    <button class="btn btn-dark btn-block mx-1 my-3" name="prev" type="submit">Prev</button>
+                    <button class="btn btn-dark btn-block mx-1 my-3" name="next" type="submit">Next</button>
+                    <input type="hidden" th:field="*{page}">
+                    Page size: <input type="number" th:field="*{pageSize}">
                     <div class="container mb-3">
                         <p class="sorting_header mb-1">Sort by:</p>
                         <select th:field="*{sortColumn}">
@@ -201,7 +204,6 @@
             </div>
         </div>
     </div>
-
 
 
 <div class="container social_media mt-2">

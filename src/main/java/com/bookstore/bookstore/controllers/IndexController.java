@@ -26,7 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.*;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Controller
 public class IndexController {
@@ -100,6 +101,7 @@ public class IndexController {
 
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
+        bf.setPageSize(10);
         model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
@@ -126,58 +128,31 @@ public class IndexController {
                             @RequestParam(value = "category", required = false) String category,
                             @RequestParam(value = "format", required = false) String format,
                             @RequestParam(value = "genre", required = false) String genre,
+                            @RequestParam(value = "page", required = false) int page,
+                            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                            @RequestParam(value = "prev", required = false) String prev,
+                            @RequestParam(value = "next", required = false) String next,
                             Model model, Principal principal) {
 
-        List<Book> bookList = bookService.findAll(); //Initializing to full list
+        if(pageSize == null || pageSize == 0) {
+            pageSize = 10;
+        }
+        List<Book> bookList = null; //Initializing to full list
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        bf.setPageSize(pageSize);
 
+        if(prev != null) {
+            if(page > 0) {
+                page--;
+            }
+        } else if (next != null) {
+            page++;
+        }
+        bf.setPage(page);
 
         /*   Sorting books based on user selection */
 
-        if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
-            sort = "title";
-            if (topseller == null || !topseller) {
-                    bookList = bookService.findAllByOrderByTitleAsc();
-                } else {
-                    bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
-                }
-
-        }  else if ("author".equalsIgnoreCase(sort)) {
-            if (topseller == null || !topseller) {
-                    bookList = bookService.findAllByOrderByAuthorAsc();
-                } else {
-                    bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
-                }
-        } else if ("date".equalsIgnoreCase(sort)){
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByPublicationdate();
-            } else {
-                bookList = bookService.findByTopsellerOrderByPublicationdate(topseller);
-            }
-
-        } else if ("rating asc".equalsIgnoreCase(sort)){
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByRatingAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByRatingAsc(topseller);
-            }
-
-        } else if ("rating desc".equalsIgnoreCase(sort)){
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByRatingDesc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByRatingDesc(topseller);
-            }
-
-        } else if ("price".equalsIgnoreCase(sort)){
-            if (topseller == null || !topseller) {
-                bookList = bookService.findAllByOrderByPriceAsc();
-            } else {
-                bookList = bookService.findByTopsellerOrderByPriceAsc(topseller);
-            }
-
-        } else {
-                model.addAttribute("emptyList", Boolean.TRUE);
-        }
 
         /*   Filtering books based on user selection */
 
@@ -225,13 +200,123 @@ public class IndexController {
 
         /* GENRE FILTER */
 
-        if(!genre.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getGenre().equalsIgnoreCase(genre)));
+        if(!genre.equalsIgnoreCase("nochoice")) {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            bookList = bookService.findByGenreOrderByPriceAsc(genre, pageable);
+            if(bookList.size() == 0) {
+                page--;
+                bf.setPage(page);
+                pageable = PageRequest.of(page, pageSize);
+                bookList = bookService.findByGenreOrderByPriceAsc(genre, pageable);
+            }
+            bf.setGenre(genre);
 
-        /* FORMAT FILTER */
+            if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
+                sort = "title";
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByTitleAsc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByTitleAsc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByTitleAsc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByTitleAsc(genre, pageable);
+                    }
+                }
+            }
+            else if ("author".equalsIgnoreCase(sort)) {
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByAuthorAsc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByAuthorAsc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByAuthorAsc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByAuthorAsc(genre, pageable);
+                    }
+                }
+            } else if ("date".equalsIgnoreCase(sort)){
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByPublicationDateAsc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByPublicationDateAsc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByPublicationDateAsc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByPublicationDateAsc(genre, pageable);
+                    }
+                }
 
-        if(!format.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getFormat().equalsIgnoreCase(format)));
+            } else if ("rating asc".equalsIgnoreCase(sort)){
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByRatingAsc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByRatingAsc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByRatingAsc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByRatingAsc(genre, pageable);
+                    }
+                }
+
+            } else if ("rating desc".equalsIgnoreCase(sort)){
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByRatingDesc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByRatingDesc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByRatingDesc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByRatingDesc(genre, pageable);
+                    }
+                }
+
+            } else if ("price".equalsIgnoreCase(sort)){
+                if (topseller == null || !topseller) {
+                    bookList = bookService.findByGenreOrderByPriceAsc(genre, pageable);
+                } else {
+                    bookList = bookService.findByGenreAndTopsellerOrderByPriceAsc(genre, pageable);
+                }
+                if(bookList.size() == 0) {
+                    page--;
+                    bf.setPage(page);
+                    pageable = PageRequest.of(page, pageSize);
+                    if (topseller == null || !topseller) {
+                        bookList = bookService.findByGenreOrderByPriceAsc(genre, pageable);
+                    } else {
+                        bookList = bookService.findByGenreAndTopsellerOrderByPriceAsc(genre, pageable);
+                    }
+                }
+
+            } else {
+                model.addAttribute("emptyList", Boolean.TRUE);
+            }
+        }
 
 
         List<String> languageList = bookService.findDistinctLanguageBy();
@@ -244,8 +329,6 @@ public class IndexController {
         model.addAttribute("genreList", genreList);
         model.addAttribute("formatList", formatList);
         model.addAttribute("bookList", bookList);
-        BookshelfForm bf = new BookshelfForm(sort);
-        bf.setTopseller(topseller);
         model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
@@ -258,7 +341,6 @@ public class IndexController {
 
         return "bookshelf";
     }
-
     @RequestMapping("/searchTitle")
     public String searchTitle(@RequestParam("title") String title,
                               @RequestParam(value = "topseller", required = false) Boolean topseller,

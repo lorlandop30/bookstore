@@ -10,6 +10,8 @@ public class BookshelfForm {
     private double minPrice;
     private double maxPrice;
     private String title;
+    private int page;
+    private int pageSize;
 
     public String getGenre() {
         return genre;
@@ -126,6 +128,22 @@ public class BookshelfForm {
 
 
     public BookshelfForm() {
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 
     public String getSortColumn() {

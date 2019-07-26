@@ -4,13 +4,10 @@ import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Review;
 import com.bookstore.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityManager;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -124,6 +121,66 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findDistinctGenreBy();
     }
 
+    @Override
+    public List<Book> findByGenreOrderByPriceAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByPriceAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreOrderByTitleAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByTitleAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreOrderByAuthorAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByAuthorAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreOrderByPublicationDateAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByPublicationdateAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreOrderByRatingAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByRatingAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreOrderByRatingDesc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreOrderByRatingDesc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByPriceAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByPriceAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByTitleAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByTitleAsc(genre, pageable);
+
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByAuthorAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByAuthorAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByPublicationDateAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByPublicationdateAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByRatingAsc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByRatingAsc(genre, pageable);
+    }
+
+    @Override
+    public List<Book> findByGenreAndTopsellerOrderByRatingDesc(String genre, Pageable pageable) {
+        return bookRepository.findByGenreAndTopsellerOrderByRatingDesc(genre, pageable);
+    }
 
     public List<Review> getReviewsList(Long id) {
 
