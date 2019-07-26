@@ -14,7 +14,6 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
-
     public List<Book> findAll() {
         return (List<Book>) bookRepository.findAll();
     }
@@ -23,23 +22,12 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBookById(id);
     }
 
-    @Override
-    public List<Book> findByTitle(String title) {
-        return bookRepository.findByTitle(title);
-    }
 
-    @Override
-    public List<String> findDistinctLanguageBy(){
-        return bookRepository.findDistinctLanguageBy();
-    }
     @Override
     public List<String> findDistinctCategoryBy(){
         return bookRepository.findDistinctCategoryBy();
     }
-    @Override
-    public List<String>findDistinctFormatBy(){
-        return bookRepository.findDistinctFormatBy();
-    }
+
     @Override
     public List<String> findDistinctGenreBy() { return bookRepository.findDistinctGenreBy();}
 

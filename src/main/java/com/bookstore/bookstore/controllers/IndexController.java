@@ -86,16 +86,12 @@ public class IndexController {
                             Model model, Principal principal) {
 
         List<Book> bookList = bookService.findAll();
-        List<String> languageList = bookService.findDistinctLanguageBy();
         List<String> categoryList = bookService.findDistinctCategoryBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
         List<String> genreList = bookService.findDistinctGenreBy();
 
         model.addAttribute("bookList", bookList);
-        model.addAttribute("languageList", languageList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("genreList", genreList);
-        model.addAttribute("formatList", formatList);
 
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
@@ -122,9 +118,7 @@ public class IndexController {
                             @RequestParam(value = "oneStars", required = false) Boolean oneStars,
                             @RequestParam(value = "minPrice", required = false) double minPrice,
                             @RequestParam(value = "maxPrice", required = false) double maxPrice,
-                            @RequestParam(value = "language", required = false) String language,
                             @RequestParam(value = "category", required = false) String category,
-                            @RequestParam(value = "format", required = false) String format,
                             @RequestParam(value = "genre", required = false) String genre,
                             @RequestParam(value = "page", required = false) int page,
                             @RequestParam(value = "pageSize", required = false) int pageSize,
@@ -136,7 +130,6 @@ public class IndexController {
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
 
-        /*   Sorting books based on user selection */
         /*   Sorting books based on user selection */
 
         if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
@@ -243,11 +236,6 @@ public class IndexController {
             bf.setMaxPrice(maxPrice);
         }
 
-        /* LANGUAGES FILTER */
-
-        if(!language.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getLanguage().equalsIgnoreCase(language)));
-
         /* CATEGORY FILTER */
 
         if(!category.equalsIgnoreCase("nochoice")) {
@@ -261,15 +249,11 @@ public class IndexController {
            bf.setGenre(genre);
         }
 
-        List<String> languageList = bookService.findDistinctLanguageBy();
         List<String> categoryList = bookService.findDistinctCategoryBy();
         List<String> genreList = bookService.findDistinctGenreBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
 
-        model.addAttribute("languageList", languageList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("genreList", genreList);
-        model.addAttribute("formatList", formatList);
         List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
         if (principal != null) {
@@ -303,43 +287,7 @@ public class IndexController {
         model.addAttribute("bookList", pagedListHolder.getPageList());
         return "bookshelf";
     }
-    @RequestMapping("/searchTitle")
-    public String searchTitle(@RequestParam("title") String title,
-                              @RequestParam(value = "topseller", required = false) Boolean topseller,
-                              @RequestParam(value = "sortColumn", required = false) String sort,
-                              Model model, Principal principal) {
 
-        List<Book> bookList;
-
-        if(title.equalsIgnoreCase("")){
-            bookList = bookService.findAll();
-        } else{
-            bookList = bookService.findByTitle(title);
-        }
-
-
-        List<String> languageList = bookService.findDistinctLanguageBy();
-        List<String> categoryList = bookService.findDistinctCategoryBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
-
-        model.addAttribute("languageList", languageList);
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("formatList", formatList);
-        model.addAttribute("bookList", bookList);
-        BookshelfForm bf = new BookshelfForm(sort);
-        bf.setTopseller(topseller);
-        model.addAttribute("formobject", bf);
-        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
-        model.addAttribute("sortColumns", sortColumns);
-        if (principal != null) {
-            String username = principal.getName();
-            User user = userService.findByUsername(username);
-            model.addAttribute("user", user);
-        }
-
-
-        return "bookshelf";
-    }
 
     @RequestMapping("/bookDetail")
     public String bookDetail(

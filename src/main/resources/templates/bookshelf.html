@@ -97,18 +97,6 @@
                         <input type="checkbox" th:field="*{topseller}"/> Show Top Sellers Only
                     </div>
 
-                    <div class="container mb-3 mt-1">
-                        <p class="sorting_header mb-1">Language:</p>
-                        <select th:field="*{language}">
-                            <option th:value="nochoice" th:text="Any"></option>
-                            <option
-                                    th:each="l : ${languageList}"
-                                    th:value="${l}"
-                                    th:text="${l}">
-                            </option>
-                        </select>
-
-                    </div>
 
                     <div class="container mb-3 mt-1">
                         <p class="sorting_header mb-1">Genre:</p>
@@ -136,18 +124,6 @@
 
                     </div>
 
-                    <div class="container mb-3 mt-1">
-                        <p class="sorting_header mb-1">Format:</p>
-                        <select th:field="*{format}">
-                            <option th:value="nochoice" th:text="Any"></option>
-                            <option
-                                    th:each="fl : ${formatList}"
-                                    th:value="${fl}"
-                                    th:text="${fl}">
-                            </option>
-                        </select>
-
-                    </div>
 
                     <div class="container mb-3 mt-1">
                         <p class="sorting_header mb-1">Price:</p>
@@ -191,7 +167,6 @@
                                     <div class="card-body">
                                         <h4 th:text="${book.title}"></h4>
                                         <span class="card-text" th:text="${book.author}"></span>
-                                        <span class="card-text" th:text="${#strings.capitalize(book.format)}"></span>
                                         <span class="card-text" style="display: inline" th:text="${book.numberOfPages}"></span><span> pages</span>
                                         <span class="card-text" style="font-size:x-large;color:#db3208;">$<span th:text="${#numbers.formatDecimal(book.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
                                         <span class="card-text" style="text-decoration: line-through;">$<span th:text="${#numbers.formatDecimal(book.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>

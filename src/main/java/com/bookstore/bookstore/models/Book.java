@@ -32,11 +32,9 @@ public class Book implements Comparable <Book> {
     private double rating;
     private String publisher;
     private String publicationdate;
-    private String language;
     private String category;
     private String genre;
     private int numberOfPages;
-    private String format;
     private int isbn;
     private double shippingWeight;
     private double listPrice;
@@ -140,13 +138,6 @@ public class Book implements Comparable <Book> {
         this.publicationdate = publicationdate;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
 
     public String getCategory() {
         return category;
@@ -162,14 +153,6 @@ public class Book implements Comparable <Book> {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public int getIsbn() {
