@@ -24,24 +24,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findBookByIsbn(int isbn) {
-        return bookRepository.findBookByIsbn(isbn);
-    }
-
-    @Override
-    public List<Book> findByRating(double rating) {
-        return bookRepository.findByRating(rating);
-    }
-
-    @Override
     public List<Book> findByTitle(String title) {
         return bookRepository.findByTitle(title);
     }
 
     @Override
-    public List<Book> findByAuthor(String author) {
-        return bookRepository.findByAuthor(author);
+    public List<String> findDistinctLanguageBy(){
+        return bookRepository.findDistinctLanguageBy();
     }
+    @Override
+    public List<String> findDistinctCategoryBy(){
+        return bookRepository.findDistinctCategoryBy();
+    }
+    @Override
+    public List<String>findDistinctFormatBy(){
+        return bookRepository.findDistinctFormatBy();
+    }
+    @Override
+    public List<String> findDistinctGenreBy() { return bookRepository.findDistinctGenreBy();}
 
     @Override
     public List<Book> findAllByOrderByTitleAsc() {
@@ -66,10 +66,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllByOrderByRatingDesc() {
         return bookRepository.findAllByOrderByRatingDesc();
+
     }
 
     @Override
-    public List<Book> findAllByOrderByPriceAsc() {
+    public List<Book> findAllByOrderByPriceAsc(){
         return bookRepository.findAllByOrderByPriceAsc();
     }
 
@@ -103,92 +104,12 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findByTopsellerOrderByPriceAsc(topseller);
     }
 
-    @Override
-    public List<String> findDistinctLanguageBy(){
-        return bookRepository.findDistinctLanguageBy();
-    }
-    @Override
-    public List<String> findDistinctCategoryBy(){
-        return bookRepository.findDistinctCategoryBy();
-    }
-    @Override
-    public List<String>findDistinctFormatBy(){
-        return bookRepository.findDistinctFormatBy();
-    }
-
-    @Override
-    public List<String> findDistinctGenreBy() {
-        return bookRepository.findDistinctGenreBy();
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByPriceAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByPriceAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByTitleAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByTitleAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByAuthorAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByAuthorAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByPublicationDateAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByPublicationdateAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByRatingAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByRatingAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreOrderByRatingDesc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreOrderByRatingDesc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByPriceAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByPriceAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByTitleAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByTitleAsc(genre, pageable);
-
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByAuthorAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByAuthorAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByPublicationDateAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByPublicationdateAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByRatingAsc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByRatingAsc(genre, pageable);
-    }
-
-    @Override
-    public List<Book> findByGenreAndTopsellerOrderByRatingDesc(String genre, Pageable pageable) {
-        return bookRepository.findByGenreAndTopsellerOrderByRatingDesc(genre, pageable);
-    }
-
     public List<Review> getReviewsList(Long id) {
 
         Book book = bookRepository.findBookById(id);
         List<Review> reviews = book.getReviewsList();
          return reviews;
     }
-
 
     public double getAverageRating(Long id) {
 
@@ -220,16 +141,6 @@ public class BookServiceImpl implements BookService {
         List<Review> reviews = book.getReviewsList();
 
         return reviews.size();
-    }
-
-    @Override
-    public List<Book> searchTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public List<Book> searchAuthor(String author) {
-        return null;
     }
 
     public Book findOne(Long id){

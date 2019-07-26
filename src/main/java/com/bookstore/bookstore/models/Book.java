@@ -29,7 +29,6 @@ public class Book implements Comparable <Book> {
 
     private String title;
     private String author;
-
     private double price;
     private boolean topseller;
     private double rating;
@@ -127,8 +126,8 @@ public class Book implements Comparable <Book> {
         return publicationdate;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationdate = publicationDate;
+    public void setPublicationDate(String publicationdate) {
+        this.publicationdate = publicationdate;
     }
 
     public String getLanguage() {
