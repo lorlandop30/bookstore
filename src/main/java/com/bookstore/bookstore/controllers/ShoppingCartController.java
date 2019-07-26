@@ -34,14 +34,7 @@ public class ShoppingCartController {
     public String shoppingCart(Model model, Principal principal) {
 
         User user = userService.findByUsername(principal.getName());
-        ShoppingCart shoppingCart = new ShoppingCart();
-
-        if (user.getShoppingCart()==null){
-            user.setShoppingCart(shoppingCart);
-        }
-        else{
-            shoppingCart = user.getShoppingCart();
-        }
+        ShoppingCart shoppingCart = user.getShoppingCart();
 
         List<CartItem> cartItemList = cartItemService.findByShoppingCart(shoppingCart);
 
