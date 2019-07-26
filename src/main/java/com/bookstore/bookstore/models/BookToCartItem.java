@@ -1,7 +1,11 @@
 package com.bookstore.bookstore.models;
 
-//import javax.annotation.processing.Generated;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class BookToCartItem {
@@ -15,7 +19,7 @@ public class BookToCartItem {
     private Book book;
 
     @ManyToOne
-    @JoinColumn(name = "cart_item_id")
+    @JoinColumn(name="cart_item_id")
     private CartItem cartItem;
 
     public Long getId() {
@@ -41,4 +45,6 @@ public class BookToCartItem {
     public void setCartItem(CartItem cartItem) {
         this.cartItem = cartItem;
     }
+
+
 }

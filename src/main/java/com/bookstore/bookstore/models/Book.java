@@ -1,10 +1,8 @@
 package com.bookstore.bookstore.models;
 
-import org.springframework.web.multipart.MultipartFile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Entity
@@ -67,6 +65,18 @@ public class Book implements Comparable <Book> {
 
     @Transient
     private MultipartFile bookImage;
+
+    public List<BookToCartItem> getBookToCartItemList() {
+        return bookToCartItemList;
+    }
+
+    public void setBookToCartItemList(List<BookToCartItem> bookToCartItemList) {
+        this.bookToCartItemList = bookToCartItemList;
+    }
+
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<BookToCartItem> bookToCartItemList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     private List<Review> reviewsList;
@@ -205,10 +215,6 @@ public class Book implements Comparable <Book> {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    @OneToMany(mappedBy = "book")
-    @JsonIgnore
-    private List<BookToCartItem> bookToCartItemList;
 
     public double getOurPrice() {
         return ourPrice;

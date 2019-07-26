@@ -1,10 +1,18 @@
 package com.bookstore.bookstore.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CartItem {
@@ -13,7 +21,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int qty;
-    private BigDecimal itemSubtotal;
+    private BigDecimal subtotal;
 
     @OneToOne
     private Book book;
@@ -23,11 +31,11 @@ public class CartItem {
     private List<BookToCartItem> bookToCartItemList;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_cart_id")
+    @JoinColumn(name="shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name="order_id")
     private Order order;
 
     public Long getId() {
@@ -46,12 +54,12 @@ public class CartItem {
         this.qty = qty;
     }
 
-    public BigDecimal getItemSubtotal() {
-        return itemSubtotal;
+    public BigDecimal getSubtotal() {
+        return subtotal;
     }
 
-    public void setItemSubtotal(BigDecimal itemSubtotal) {
-        this.itemSubtotal = itemSubtotal;
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
 
     public Book getBook() {
@@ -85,4 +93,6 @@ public class CartItem {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+
 }

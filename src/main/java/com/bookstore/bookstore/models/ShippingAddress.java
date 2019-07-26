@@ -1,97 +1,121 @@
 package com.bookstore.bookstore.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ShippingAddress {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userShippingName;
-    private String userShippingStreet1;
-    private String userShippingStreet2;
-    private String userShippingCity;
+    private String ShippingAddressName;
+    private String ShippingAddressStreet1;
+    private String ShippingAddressStreet2;
+    private String ShippingAddressCity;
+    private String ShippingAddressState;
+    private String ShippingAddressCountry;
+    private String ShippingAddressZipcode;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     public Long getId() {
         return id;
     }
 
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUserShippingName() {
-        return userShippingName;
+
+    public String getShippingAddressName() {
+        return ShippingAddressName;
     }
 
-    public void setUserShippingName(String userShippingName) {
-        this.userShippingName = userShippingName;
+
+    public void setShippingAddressName(String shippingAddressName) {
+        ShippingAddressName = shippingAddressName;
     }
 
-    public String getUserShippingStreet1() {
-        return userShippingStreet1;
+
+    public String getShippingAddressStreet1() {
+        return ShippingAddressStreet1;
     }
 
-    public void setUserShippingStreet1(String userShippingStreet1) {
-        this.userShippingStreet1 = userShippingStreet1;
+
+    public void setShippingAddressStreet1(String shippingAddressStreet1) {
+        ShippingAddressStreet1 = shippingAddressStreet1;
     }
 
-    public String getUserShippingStreet2() {
-        return userShippingStreet2;
+
+    public String getShippingAddressStreet2() {
+        return ShippingAddressStreet2;
     }
 
-    public void setUserShippingStreet2(String userShippingStreet2) {
-        this.userShippingStreet2 = userShippingStreet2;
+
+    public void setShippingAddressStreet2(String shippingAddressStreet2) {
+        ShippingAddressStreet2 = shippingAddressStreet2;
     }
 
-    public String getUserShippingCity() {
-        return userShippingCity;
+
+    public String getShippingAddressCity() {
+        return ShippingAddressCity;
     }
 
-    public void setUserShippingCity(String userShippingCity) {
-        this.userShippingCity = userShippingCity;
+
+    public void setShippingAddressCity(String shippingAddressCity) {
+        ShippingAddressCity = shippingAddressCity;
     }
 
-    public String getUserShippingState() {
-        return userShippingState;
+
+    public String getShippingAddressState() {
+        return ShippingAddressState;
     }
 
-    public void setUserShippingState(String userShippingState) {
-        this.userShippingState = userShippingState;
+
+    public void setShippingAddressState(String shippingAddressState) {
+        ShippingAddressState = shippingAddressState;
     }
 
-    public String getUserShippingCountry() {
-        return userShippingCountry;
+
+    public String getShippingAddressCountry() {
+        return ShippingAddressCountry;
     }
 
-    public void setUserShippingCountry(String userShippingCountry) {
-        this.userShippingCountry = userShippingCountry;
+
+    public void setShippingAddressCountry(String shippingAddressCountry) {
+        ShippingAddressCountry = shippingAddressCountry;
     }
 
-    public String getUserShippingZipcode() {
-        return userShippingZipcode;
+
+    public String getShippingAddressZipcode() {
+        return ShippingAddressZipcode;
     }
 
-    public void setUserShippingZipcode(String userShippingZipcode) {
-        this.userShippingZipcode = userShippingZipcode;
+
+    public void setShippingAddressZipcode(String shippingAddressZipcode) {
+        ShippingAddressZipcode = shippingAddressZipcode;
     }
+
 
     public User getUser() {
         return user;
     }
 
+
     public void setUser(User user) {
         this.user = user;
     }
 
-    private String userShippingState;
-    private String userShippingCountry;
-    private String userShippingZipcode;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
 
 }

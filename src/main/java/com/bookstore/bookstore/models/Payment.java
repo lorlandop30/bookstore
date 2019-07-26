@@ -1,6 +1,13 @@
 package com.bookstore.bookstore.models;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Payment {
@@ -13,7 +20,14 @@ public class Payment {
     private String cardNumber;
     private int expiryMonth;
     private int expiryYear;
-    private int crc;
+    private int cvc;
+    private String holderName;
+
+    @OneToOne
+    private Order order;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userPayment")
+    private UserBilling userBilling;
 
     public Long getId() {
         return id;
@@ -63,12 +77,12 @@ public class Payment {
         this.expiryYear = expiryYear;
     }
 
-    public int getCrc() {
-        return crc;
+    public int getCvc() {
+        return cvc;
     }
 
-    public void setCrc(int crc) {
-        this.crc = crc;
+    public void setCvc(int cvc) {
+        this.cvc = cvc;
     }
 
     public String getHolderName() {
@@ -77,14 +91,6 @@ public class Payment {
 
     public void setHolderName(String holderName) {
         this.holderName = holderName;
-    }
-
-    public boolean isDefaultPayment() {
-        return defaultPayment;
-    }
-
-    public void setDefaultPayment(boolean defaultPayment) {
-        this.defaultPayment = defaultPayment;
     }
 
     public Order getOrder() {
@@ -103,12 +109,5 @@ public class Payment {
         this.userBilling = userBilling;
     }
 
-    private String holderName;
-    private boolean defaultPayment;
 
-    @OneToOne
-    private Order order;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userPayment")
-    private UserBilling userBilling;
 }
