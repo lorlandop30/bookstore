@@ -1,5 +1,6 @@
 package com.bookstore.bookstore;
 
+import com.bookstore.bookstore.models.ShoppingCart;
 import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.security.Role;
 import com.bookstore.bookstore.security.UserRole;

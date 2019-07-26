@@ -32,8 +32,16 @@ public class ShoppingCartController {
 
     @RequestMapping("/cart")
     public String shoppingCart(Model model, Principal principal) {
+
         User user = userService.findByUsername(principal.getName());
-        ShoppingCart shoppingCart = user.getShoppingCart();
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        if (user.getShoppingCart()==null){
+            user.setShoppingCart(shoppingCart);
+        }
+        else{
+            shoppingCart = user.getShoppingCart();
+        }
 
         List<CartItem> cartItemList = cartItemService.findByShoppingCart(shoppingCart);
 
