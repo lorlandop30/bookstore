@@ -738,4 +738,10 @@ public class IndexController {
 
         return "MyProfile";
     }
+
+    @RequestMapping("/cart")
+    public String shoppingCart(Model model, Principal principal) {
+
+        return "ShoppingCart";
+    }
 }
