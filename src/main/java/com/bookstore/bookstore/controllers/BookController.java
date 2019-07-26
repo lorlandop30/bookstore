@@ -44,7 +44,14 @@ public class BookController {
         genreList.add("Science Fiction");
         genreList.add("Biography");
 
+        Set<String> categoryList = new TreeSet<>();
+        categoryList.addAll(bookService.findDistinctCategoryBy());
+        categoryList.add("Fiction");
+        categoryList.add("Non-Fiction");
+
         model.addAttribute("genreList", genreList);
+        model.addAttribute("categoryList", categoryList);
+
         Book book = new Book();
         model.addAttribute("book", book);
         return "addBook";
