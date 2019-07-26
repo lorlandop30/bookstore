@@ -2,6 +2,7 @@ package com.bookstore.bookstore.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -67,6 +68,18 @@ public class Book implements Comparable <Book> {
 
     @Transient
     private MultipartFile bookImage;
+
+    public List<BookToCartItem> getBookToCartItemList() {
+        return bookToCartItemList;
+    }
+
+    public void setBookToCartItemList(List<BookToCartItem> bookToCartItemList) {
+        this.bookToCartItemList = bookToCartItemList;
+    }
+
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<BookToCartItem> bookToCartItemList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     private List<Review> reviewsList;
