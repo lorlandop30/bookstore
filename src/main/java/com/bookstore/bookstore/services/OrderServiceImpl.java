@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,19 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findOrderById(id);
     }
 
+    public Iterable<Order> findAll(){
+        return orderRepository.findAll();
+    }
 
+//    public List<Order> fidAllByUser(User user){
+//        Iterable<Order> orders = orderRepository.findAll();
+//        List<Order> ordersByUser = new ArrayList<Order>();
+//        for (Order order : orders) {
+//            if(order.getUser().getId() == user.getId())
+//                ordersByUser.add(order);
+//        }
+//
+//        return ordersByUser;
+//
+//    }
 }
