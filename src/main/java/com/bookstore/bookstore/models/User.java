@@ -44,8 +44,13 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Review> userReviewsList;
 
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orderList;
+
 
     public User() {
     }
@@ -58,6 +63,7 @@ public class User implements UserDetails {
         this.email = email;
         this.phone = phone;
     }
+
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
@@ -193,6 +199,14 @@ public class User implements UserDetails {
         Set<GrantedAuthority> authorities = new HashSet<>();
         userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
         return authorities;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
 }

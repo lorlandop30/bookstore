@@ -5,6 +5,7 @@ import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.models.UserBilling;
 import com.bookstore.bookstore.models.UserPayment;
 import com.bookstore.bookstore.models.UserShipping;
+import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.repositories.*;
 import com.bookstore.bookstore.security.PasswordResetToken;
 import com.bookstore.bookstore.security.UserRole;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService{
     private UserPaymentRepository userPaymentRepository;
 
     private UserShippingRepository userShippingRepository;
+
+    private BookService bookService;
 
     @Autowired
     public UserServiceImpl(PasswordResetTokenRepository passwordResetTokenRepository, UserRepository userRepository,
@@ -149,4 +152,6 @@ public class UserServiceImpl implements UserService{
             }
         }
     }
+
 }
+

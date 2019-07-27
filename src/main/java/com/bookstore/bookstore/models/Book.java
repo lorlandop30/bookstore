@@ -17,6 +17,7 @@ public class Book implements Comparable <Book> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
+
     private Long id;
 
     public Long getId() {

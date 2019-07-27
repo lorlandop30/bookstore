@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.controllers;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,8 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
+import org.springframework.web.bind.annotation.*;
 
 import com.bookstore.bookstore.services.*;
 import com.bookstore.bookstore.models.*;
@@ -26,7 +26,16 @@ public class CheckoutController {
     private UserService userService;
 
     @Autowired
+    private BookService bookService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private CartItemService cartItemService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     private ShippingAddressService shippingAddressService;
@@ -217,6 +226,34 @@ public class CheckoutController {
 
             return "checkout";
         }
+    }
+
+    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    public String checkoutPost(@RequestParam(value = "sortColumn", required = false) String sort,
+                               @RequestParam(value = "topseller", required = false) Boolean topseller,
+                               Principal principal, Model model) {
+
+        ShoppingCart shoppingCart = userService.findByUsername(principal.getName()).getShoppingCart();
+
+        User user = userService.findByUsername(principal.getName());
+
+        Order order = orderService.createOrder(shoppingCart, user);
+
+        shoppingCartService.clearShoppingCart(shoppingCart);
+
+
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            model.addAttribute("user", user);
+        }
+
+
+        return "index";
+
     }
 
 }
