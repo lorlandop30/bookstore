@@ -51,12 +51,12 @@
             <!-- Search form -->
             <form class="form-inline my-2 my-lg-0" th:action="searchTitle" th:object="${formobject}">
                 <input class="form-control mr-sm-2" type="search" placeholder="Book title" th:field="*{title}" aria-label="Search">
-                <button class="btn btn-light my-2 my-sm-0" style="color:green;font-weight:bold" type="submit">Search</button>
+                <button class="btn btn-light my-2 my-sm-0" style="font-weight:bold" type="submit">Search</button>
             </form>
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                    <a class="nav-link" href="/shoppingCart/cart"><i class="fas fa-shopping-cart"></i><span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAnonymous()">
@@ -167,11 +167,6 @@
 
         </div>
         <div class="col col-sm-10">
-<!--            <h2 class="section-headline">-->
-<!--                <h2 class="section-headline">-->
-<!--                    <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'All Books'"></span>-->
-<!--                </h2>-->
-<!--            </h2>-->
 
             <div class="row mt-0 pt-0" style="margin-top: 60px;">
                 <div class="col-xs-9 col-xs-offset-3">

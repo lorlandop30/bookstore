@@ -2,6 +2,7 @@ package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Review;
+import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;

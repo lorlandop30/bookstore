@@ -34,7 +34,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserShipping> userShippingList;
 
@@ -45,15 +44,15 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Review> userReviewsList;
 
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orderList;
+
+
     public User() {
-    }
-
-    public List<Review> getUserReviewsList() {
-        return userReviewsList;
-    }
-
-    public void setUserReviewsList(List<Review> userReviewsList) {
-        this.userReviewsList = userReviewsList;
     }
 
     public User(String username, String password, String firstName, String lastName, String email, String phone) {
@@ -63,6 +62,24 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+    }
+
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+
+    public List<Review> getUserReviewsList() {
+        return userReviewsList;
+    }
+
+    public void setUserReviewsList(List<Review> userReviewsList) {
+        this.userReviewsList = userReviewsList;
     }
 
 
@@ -182,6 +199,14 @@ public class User implements UserDetails {
         Set<GrantedAuthority> authorities = new HashSet<>();
         userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
         return authorities;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
 }
