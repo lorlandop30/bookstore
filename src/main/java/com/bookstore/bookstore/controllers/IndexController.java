@@ -290,6 +290,7 @@ public class IndexController {
 
         model.addAttribute("formobject", bf);
         model.addAttribute("bookList", pagedListHolder.getPageList());
+        model.addAttribute("booksAuthor", false);
         return "bookshelf";
     }
 
@@ -842,6 +843,7 @@ public class IndexController {
 
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("bookList", bookList);
+        model.addAttribute("booksAuthor", false);
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
         model.addAttribute("formobject", bf);
@@ -855,6 +857,36 @@ public class IndexController {
 
 
         return "bookshelf";
+    }
+
+    @RequestMapping("/bookauthorList")
+    public String searchAuthor(@RequestParam(value = "author") String author,
+                              @RequestParam(value = "topseller", required = false) Boolean topseller,
+                              @RequestParam(value = "sortColumn", required = false) String sort,
+                              Model model, Principal principal) {
+
+        List<Book> bookList = bookService.findByAuthor(author);
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+
+
+        model.addAttribute("booksAuthor", true);
+        model.addAttribute("authorName", author);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+
+        return "bookshelf";
+
     }
 
 }
