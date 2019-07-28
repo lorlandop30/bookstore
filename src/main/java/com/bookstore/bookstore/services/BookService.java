@@ -9,11 +9,10 @@ import java.util.List;
 public interface BookService {
 
     List<Book> findAll ();
+    Book findOne(Long id);
     Book findBookById(Long id);
-    Book findBookByIsbn(int isbn);
-    List<Book> findByRating(double rating);
-    List<Book> findByTitle(String title);
-    List<Book> findByAuthor(String author);
+    List<String> findDistinctCategoryBy();
+    List<String> findDistinctGenreBy();
     List<Book> findAllByOrderByTitleAsc();
     List<Book> findAllByOrderByAuthorAsc();
     List<Book> findAllByOrderByPublicationdate();
@@ -26,10 +25,7 @@ public interface BookService {
     List<Book> findByTopsellerOrderByRatingAsc(Boolean topseller);
     List<Book> findByTopsellerOrderByRatingDesc(Boolean topseller);
     List<Book> findByTopsellerOrderByPriceAsc(Boolean topseller);
-    List<String> findDistinctLanguageBy();
-    List<String> findDistinctCategoryBy();
-    List<String> findDistinctFormatBy();
-    List<String> findDistinctGenreBy();
+    List<Book> findByTitle(String title);
 
     double getAverageRating (Long id);
     int getNumberOfReviews (Long id);

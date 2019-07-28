@@ -64,25 +64,13 @@
 
                 <!-- publication date -->
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="publicationDate">Publication
+                    <label class="col-md-2 control-label" for="publicationdate">Publication
                         Date</label>
                     <div class="col-md-8">
-                        <input type="date" class="form-control" id="publicationDate"
-                               name="publicationDate" th:value="${book.publicationDate}"
-                               placeholder="ublication Date"/> <span class="help-block">Publication
+                        <input type="date" class="form-control" id="publicationdate"
+                               name="publicationdate" th:value="${book.publicationdate}"
+                               placeholder="Publication Date"/> <span class="help-block">Publication
 								Date of the book</span>
-                    </div>
-                </div>
-
-                <!-- language -->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="language">Language</label>
-                    <div class="col-md-8">
-                        <select th:value="${book.language}" id="language" name="language"
-                                class="form-control">
-                            <option value="english">English</option>
-                            <option value="spanish">Spanish</option>
-                        </select>
                     </div>
                 </div>
 
@@ -100,31 +88,17 @@
 
                 <!-- category -->
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="category">*
-                        Category</label>
-                    <div class="col-md-8">
-                        <select th:value="${book.category}" id="category" name="category"
-                                class="form-control">
-                            <option value="" selected="selected" disabled="disabled">Please
-                                select an option...
-                            </option>
-                            <option value="Management"
-                                    th:selected="(${book.category}=='Management')">Management
-                            </option>
-                            <option value="Fiction"
-                                    th:selected="(${book.category}=='Fiction')">Fiction
-                            </option>
-                            <option value="Engineering"
-                                    th:selected="(${book.category}=='Engineering')">Engineering
-                            </option>
-                            <option value="Programming"
-                                    th:selected="(${book.category}=='Programming')">Programming
-                            </option>
-                            <option value="Arts &amp; Literature"
-                                    th:selected="(${book.category}=='Arts &amp; Literature')">Arts
-                                &amp; Literature
+                    <p class="sorting_header mb-1">Category:</p>
+                        <select th:field="*{book.category}">
+                            <option
+                                    th:each="cl : ${categoryList}"
+                                    th:value="${cl}"
+                                    th:text="${cl}">
                             </option>
                         </select>
+                        Category</label>
+                    <div class="col-md-8">
+
                     </div>
                 </div>
 
@@ -137,18 +111,6 @@
                                id="pageNumber" th:value="${book.numberOfPages}"
                                placeholder="Page Number"/> <span class="help-block">Number
 								of pages of the book</span>
-                    </div>
-                </div>
-
-                <!-- format -->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="format">Format</label>
-                    <div class="col-md-8">
-                        <select th:value="${book.format}" id="format" name="format"
-                                class="form-control">
-                            <option value="paperback">Paperback</option>
-                            <option value="hardcover">Hardcover</option>
-                        </select>
                     </div>
                 </div>
 
@@ -185,7 +147,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span> <input
-                                th:value="${book.listPrice}" type="number" name="listPrice"
+                                th:value="${book.listPrice}" type="number" name="listPrice" pattern="[0-9]+([\.,][0-9]+)?" step="0.01"
                                 class="form-control" id="listPrice" placeholder="List Price"/>
                         </div>
                         <span class="help-block">List price of the book</span>
@@ -199,7 +161,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span> <input
-                                th:value="${book.ourPrice}" type="number" name="ourPrice"
+                                th:value="${book.ourPrice}" type="number" name="ourPrice" pattern="[0-9]+([\.,][0-9]+)?" step="0.01"
                                 class="form-control" id="ourPrice" placeholder="Our Price"/>
                         </div>
                         <span class="help-block">Our price of the book</span>

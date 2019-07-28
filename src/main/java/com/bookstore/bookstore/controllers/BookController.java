@@ -2,6 +2,7 @@ package com.bookstore.bookstore.controllers;
 
 import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.repositories.BookRepository;
+import com.bookstore.bookstore.services.BookService;
 import com.bookstore.bookstore.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,8 +43,18 @@ public class BookController {
         genreList.add("History");
         genreList.add("Science Fiction");
         genreList.add("Biography");
+        genreList.add("Political Satire");
+        genreList.add("Children's Books");
+        genreList.add("Reference Work");
+
+        Set<String> categoryList = new TreeSet<>();
+        categoryList.addAll(bookService.findDistinctCategoryBy());
+        categoryList.add("Fiction");
+        categoryList.add("Non-Fiction");
 
         model.addAttribute("genreList", genreList);
+        model.addAttribute("categoryList", categoryList);
+
         Book book = new Book();
         model.addAttribute("book", book);
         return "addBook";
@@ -67,6 +78,7 @@ public class BookController {
         }
         return "addBook";
     }
+
 
 //    @PostMapping("/importBooks")
 //    public void savingBooks(@RequestParam(value = "title") String title,
