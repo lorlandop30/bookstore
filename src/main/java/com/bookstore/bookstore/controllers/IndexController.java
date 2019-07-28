@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.controllers;
 
 import com.bookstore.bookstore.models.*;
+import com.bookstore.bookstore.repositories.OrderRepository;
 import com.bookstore.bookstore.security.PasswordResetToken;
 import com.bookstore.bookstore.security.Role;
 import com.bookstore.bookstore.security.UserRole;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
+import sun.java2d.jules.IdleTileCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
@@ -38,6 +40,8 @@ public class IndexController {
     private BookService bookService;
     private UserPaymentService userPaymentService;
     private UserShippingService userShippingService;
+    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     @Autowired
     public IndexController(UserService userService, UserSecurityService userSecurityService,
@@ -293,15 +297,33 @@ public class IndexController {
     public String bookDetail(
             @PathParam("id") Long id, Model model, Principal principal
     ) {
+
+        boolean allowToReview = false;
+
+        Book book = bookService.findBookById(id);
+
+        model.addAttribute("book", book);
+
         if (principal != null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
+
+        Book book = bookService.findOne(id)
+        List<Order> orders = user.getOrderList();
+
+            for (Order order : orders) {
+                if(order.getUser().getId() == user.getId()){
+                    for (CartItem cartItem : order.getCartItemList()) {
+                        if(cartItem.getBook().getId() == book.getId())
+                            allowToReview = true;
+                    }
+                }
+            }
+
         }
 
-        Book book = bookService.findOne(id);
-
-        model.addAttribute("book", book);
+        model.addAttribute("allowToReview", allowToReview);
 
         List<Integer> qtyList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 

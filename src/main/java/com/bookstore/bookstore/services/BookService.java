@@ -2,6 +2,7 @@ package com.bookstore.bookstore.services;
 
 import com.bookstore.bookstore.models.Book;
 import com.bookstore.bookstore.models.Review;
+import com.bookstore.bookstore.models.User;
 
 import java.util.List;
 
