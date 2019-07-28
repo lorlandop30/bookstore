@@ -1,10 +1,8 @@
 package com.bookstore.bookstore.models;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @Entity
@@ -30,17 +28,14 @@ public class Book implements Comparable <Book> {
 
     private String title;
     private String author;
-
     private double price;
     private boolean topseller;
     private double rating;
     private String publisher;
     private String publicationdate;
-    private String language;
     private String category;
     private String genre;
     private int numberOfPages;
-    private String format;
     private int isbn;
     private double shippingWeight;
     private double listPrice;
@@ -140,17 +135,10 @@ public class Book implements Comparable <Book> {
         return publicationdate;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationdate = publicationDate;
+    public void setPublicationDate(String publicationdate) {
+        this.publicationdate = publicationdate;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
 
     public String getCategory() {
         return category;
@@ -166,14 +154,6 @@ public class Book implements Comparable <Book> {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public int getIsbn() {
@@ -200,10 +180,6 @@ public class Book implements Comparable <Book> {
         this.listPrice = listPrice;
     }
 
-    public double getOurPrice() {
-        return ourPrice;
-    }
-
     public void setOurPrice(double ourPrice) {
         this.ourPrice = ourPrice;
     }
@@ -222,6 +198,10 @@ public class Book implements Comparable <Book> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getOurPrice() {
+        return ourPrice;
     }
 
     public int getInStockNumber() {

@@ -5,47 +5,32 @@ import com.bookstore.bookstore.models.Review;
 import com.bookstore.bookstore.models.User;
 import com.bookstore.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityManager;
 
 import java.util.List;
-import java.util.ArrayList;
 
 @Service
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
-
     public List<Book> findAll() {
         return (List<Book>) bookRepository.findAll();
     }
-
     @Override
     public Book findBookById(Long id) {
         return bookRepository.findBookById(id);
     }
 
+
     @Override
-    public Book findBookByIsbn(int isbn) {
-        return bookRepository.findBookByIsbn(isbn);
+    public List<String> findDistinctCategoryBy(){
+        return bookRepository.findDistinctCategoryBy();
     }
 
     @Override
-    public List<Book> findByRating(double rating) {
-        return bookRepository.findByRating(rating);
-    }
-
-    @Override
-    public List<Book> findByTitle(String title) {
-        return bookRepository.findByTitle(title);
-    }
-
-    @Override
-    public List<Book> findByAuthor(String author) {
-        return bookRepository.findByAuthor(author);
-    }
+    public List<String> findDistinctGenreBy() { return bookRepository.findDistinctGenreBy();}
 
     @Override
     public List<Book> findAllByOrderByTitleAsc() {
@@ -70,10 +55,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllByOrderByRatingDesc() {
         return bookRepository.findAllByOrderByRatingDesc();
+
     }
 
     @Override
-    public List<Book> findAllByOrderByPriceAsc() {
+    public List<Book> findAllByOrderByPriceAsc(){
         return bookRepository.findAllByOrderByPriceAsc();
     }
 
@@ -107,32 +93,12 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findByTopsellerOrderByPriceAsc(topseller);
     }
 
-    @Override
-    public List<String> findDistinctLanguageBy(){
-        return bookRepository.findDistinctLanguageBy();
-    }
-    @Override
-    public List<String> findDistinctCategoryBy(){
-        return bookRepository.findDistinctCategoryBy();
-    }
-    @Override
-    public List<String>findDistinctFormatBy(){
-        return bookRepository.findDistinctFormatBy();
-    }
-
-    @Override
-    public List<String> findDistinctGenreBy() {
-        return bookRepository.findDistinctGenreBy();
-    }
-
-
     public List<Review> getReviewsList(Long id) {
 
         Book book = bookRepository.findBookById(id);
         List<Review> reviews = book.getReviewsList();
          return reviews;
     }
-
 
     public double getAverageRating(Long id) {
 
@@ -164,6 +130,10 @@ public class BookServiceImpl implements BookService {
         List<Review> reviews = book.getReviewsList();
 
         return reviews.size();
+    }
+
+    public Book findOne(Long id){
+        return bookRepository.findById(id).orElse(null);
     }
 
 

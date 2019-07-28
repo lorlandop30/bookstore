@@ -1,5 +1,4 @@
 package com.bookstore.bookstore.models;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -95,5 +94,4 @@ public class BillingAddress {
     public void setOrder(Order order) {
         this.order = order;
     }
-
 }

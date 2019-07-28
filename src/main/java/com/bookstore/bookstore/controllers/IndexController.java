@@ -11,6 +11,7 @@ import com.bookstore.bookstore.utility.SecurityUtility;
 
 import com.bookstore.bookstore.utility.USConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import com.bookstore.bookstore.repositories.BookRepository;
 
 import org.springframework.web.bind.annotation.*;
 import sun.java2d.jules.IdleTileCache;
@@ -32,7 +32,6 @@ import java.util.*;
 
 @Controller
 public class IndexController {
-
 
     private UserService userService;
     private UserSecurityService userSecurityService;
@@ -78,7 +77,6 @@ public class IndexController {
         return "index";
     }
 
-
     @RequestMapping("/login")
     public String login(Model model) {
         model.addAttribute("classActiveLogin", true);
@@ -92,19 +90,16 @@ public class IndexController {
                             Model model, Principal principal) {
 
         List<Book> bookList = bookService.findAll();
-        List<String> languageList = bookService.findDistinctLanguageBy();
         List<String> categoryList = bookService.findDistinctCategoryBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
         List<String> genreList = bookService.findDistinctGenreBy();
 
         model.addAttribute("bookList", bookList);
-        model.addAttribute("languageList", languageList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("genreList", genreList);
-        model.addAttribute("formatList", formatList);
 
         BookshelfForm bf = new BookshelfForm(sort);
         bf.setTopseller(topseller);
+        bf.setPageSize(10);
         model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
@@ -127,31 +122,34 @@ public class IndexController {
                             @RequestParam(value = "oneStars", required = false) Boolean oneStars,
                             @RequestParam(value = "minPrice", required = false) double minPrice,
                             @RequestParam(value = "maxPrice", required = false) double maxPrice,
-                            @RequestParam(value = "language", required = false) String language,
                             @RequestParam(value = "category", required = false) String category,
-                            @RequestParam(value = "format", required = false) String format,
                             @RequestParam(value = "genre", required = false) String genre,
+                            @RequestParam(value = "page", required = false) int page,
+                            @RequestParam(value = "pageSize", required = false) int pageSize,
+                            @RequestParam(value = "prev", required = false) String prev,
+                            @RequestParam(value = "next", required = false) String next,
                             Model model, Principal principal) {
 
         List<Book> bookList = bookService.findAll(); //Initializing to full list
-
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
 
         /*   Sorting books based on user selection */
 
         if (sort == null || "".equals(sort) || "title".equalsIgnoreCase(sort)) {
             sort = "title";
             if (topseller == null || !topseller) {
-                    bookList = bookService.findAllByOrderByTitleAsc();
-                } else {
-                    bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
-                }
+                bookList = bookService.findAllByOrderByTitleAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByTitleAsc(topseller);
+            }
 
         }  else if ("author".equalsIgnoreCase(sort)) {
             if (topseller == null || !topseller) {
-                    bookList = bookService.findAllByOrderByAuthorAsc();
-                } else {
-                    bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
-                }
+                bookList = bookService.findAllByOrderByAuthorAsc();
+            } else {
+                bookList = bookService.findByTopsellerOrderByAuthorAsc(topseller);
+            }
         } else if ("date".equalsIgnoreCase(sort)){
             if (topseller == null || !topseller) {
                 bookList = bookService.findAllByOrderByPublicationdate();
@@ -181,7 +179,7 @@ public class IndexController {
             }
 
         } else {
-                model.addAttribute("emptyList", Boolean.TRUE);
+            model.addAttribute("emptyList", Boolean.TRUE);
         }
 
         /*   Filtering books based on user selection */
@@ -192,66 +190,74 @@ public class IndexController {
             if(fiveStars==null){
                 bookList.removeIf(book -> (book.getRating()==5.0));
             }
+            else{
+                bf.setFiveStars(Boolean.TRUE);
+            }
             if(fourStars==null){
                 bookList.removeIf(book -> (book.getRating()>=4.0 && book.getRating()<5.0));
+            }
+            else{
+                bf.setFourStars(Boolean.TRUE);
             }
             if(threeStars==null){
                 bookList.removeIf(book -> (book.getRating()>=3.0 && book.getRating()<4.0));
             }
+            else{
+                bf.setThreeStars(Boolean.TRUE);
+            }
             if(twoStars==null){
                 bookList.removeIf(book -> (book.getRating()>=2.0 && book.getRating()<3.0));
+            }
+            else{
+                bf.setTwoStars(Boolean.TRUE);
             }
             if(oneStars==null){
                 bookList.removeIf(book -> (book.getRating()>=1.0 && book.getRating()<2.0));
             }
+            else{
+                bf.setOneStars(Boolean.TRUE);
+            }
             bookList.removeIf(book -> (book.getRating()<1.0));
 
+        }
+        else{
+            bf.setFiveStars(null);
+            bf.setFourStars(null);
+            bf.setThreeStars(null);
+            bf.setTwoStars(null);
+            bf.setOneStars(null);
         }
 
         /*   PRICE FILTER */
 
         if(minPrice>0.0){
             bookList.removeIf(book -> (book.getOurPrice()<minPrice));
+            bf.setMinPrice(minPrice);
         }
 
         if(maxPrice>0.0){
             bookList.removeIf(book -> (book.getOurPrice()>maxPrice));
+            bf.setMaxPrice(maxPrice);
         }
-
-        /* LANGUAGES FILTER */
-
-        if(!language.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getLanguage().equalsIgnoreCase(language)));
 
         /* CATEGORY FILTER */
 
-        if(!category.equalsIgnoreCase("nochoice"))
+        if(!category.equalsIgnoreCase("nochoice")) {
             bookList.removeIf(book -> !(book.getCategory().equalsIgnoreCase(category)));
+            bf.setCategory(category);
 
+        }
         /* GENRE FILTER */
+        if(!genre.equalsIgnoreCase("nochoice")) {
+           bookList.removeIf(book -> !(book.getGenre().equalsIgnoreCase(genre)));
+           bf.setGenre(genre);
+        }
 
-        if(!genre.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getGenre().equalsIgnoreCase(genre)));
-
-        /* FORMAT FILTER */
-
-        if(!format.equalsIgnoreCase("nochoice"))
-            bookList.removeIf(book -> !(book.getFormat().equalsIgnoreCase(format)));
-
-
-        List<String> languageList = bookService.findDistinctLanguageBy();
         List<String> categoryList = bookService.findDistinctCategoryBy();
         List<String> genreList = bookService.findDistinctGenreBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
 
-        model.addAttribute("languageList", languageList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("genreList", genreList);
-        model.addAttribute("formatList", formatList);
-        model.addAttribute("bookList", bookList);
-        BookshelfForm bf = new BookshelfForm(sort);
-        bf.setTopseller(topseller);
-        model.addAttribute("formobject", bf);
         List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
         model.addAttribute("sortColumns", sortColumns);
         if (principal != null) {
@@ -260,45 +266,29 @@ public class IndexController {
             model.addAttribute("user", user);
         }
 
-
-        return "bookshelf";
-    }
-
-    @RequestMapping("/searchTitle")
-    public String searchTitle(@RequestParam("title") String title,
-                              @RequestParam(value = "topseller", required = false) Boolean topseller,
-                              @RequestParam(value = "sortColumn", required = false) String sort,
-                              Model model, Principal principal) {
-
-        List<Book> bookList;
-
-        if(title.equalsIgnoreCase("")){
-            bookList = bookService.findAll();
-        } else{
-            bookList = bookService.findByTitle(title);
+        PagedListHolder<Book> pagedListHolder = new PagedListHolder<>(bookList);
+        pagedListHolder.setPageSize(pageSize);
+        pagedListHolder.setPage(page);
+        if(prev != null){
+            if(!pagedListHolder.isFirstPage()){
+                page--;
+            }
+        }
+        else if (next != null){
+            if(!pagedListHolder.isLastPage()){
+                page++;
+            }
+        }
+        else {
+            page = 0;
         }
 
+        pagedListHolder.setPage(page);
+        bf.setPageSize(pageSize);
+        bf.setPage(page);
 
-        List<String> languageList = bookService.findDistinctLanguageBy();
-        List<String> categoryList = bookService.findDistinctCategoryBy();
-        List<String> formatList = bookService.findDistinctFormatBy();
-
-        model.addAttribute("languageList", languageList);
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("formatList", formatList);
-        model.addAttribute("bookList", bookList);
-        BookshelfForm bf = new BookshelfForm(sort);
-        bf.setTopseller(topseller);
         model.addAttribute("formobject", bf);
-        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
-        model.addAttribute("sortColumns", sortColumns);
-        if (principal != null) {
-            String username = principal.getName();
-            User user = userService.findByUsername(username);
-            model.addAttribute("user", user);
-        }
-
-
+        model.addAttribute("bookList", pagedListHolder.getPageList());
         return "bookshelf";
     }
 
@@ -319,7 +309,8 @@ public class IndexController {
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
 
-            List<Order> orders = user.getOrderList();
+        Book book = bookService.findOne(id)
+        List<Order> orders = user.getOrderList();
 
             for (Order order : orders) {
                 if(order.getUser().getId() == user.getId()){
@@ -390,6 +381,11 @@ public class IndexController {
 
 
         return "MyAccount";
+    }
+
+    @RequestMapping("/shoppingCart")
+    public String shoppingCart(){
+        return "shoppingCart";
     }
 
     @PostMapping("/newUser")
