@@ -17,12 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.bookstore.bookstore.repositories.BookRepository;
 
 import org.springframework.web.bind.annotation.*;
-import sun.java2d.jules.IdleTileCache;
+//import sun.java2d.jules.IdleTileCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
@@ -630,6 +631,74 @@ public class IndexController {
             return "MyProfile";
         }
     }
+
+
+    @RequestMapping(value="/updateUserInfo", method=RequestMethod.POST)
+    public String updateUserInfo(
+            @ModelAttribute("user") User user,
+            @ModelAttribute("newPassword") String newPassword,
+            Model model
+    ) throws Exception {
+        User currentUser = userService.findById(user.getId());
+
+        if(currentUser == null) {
+            throw new Exception ("User not found");
+        }
+
+        /*check email already exists*/
+        if (userService.findByEmail(user.getEmail())!=null) {
+            if(userService.findByEmail(user.getEmail()).getId() != currentUser.getId()) {
+                model.addAttribute("emailExists", true);
+                return "MyProfile";
+            }
+        }
+
+        /*check username already exists*/
+        if (userService.findByUsername(user.getUsername())!=null) {
+            if(userService.findByUsername(user.getUsername()).getId() != currentUser.getId()) {
+                model.addAttribute("usernameExists", true);
+                return "MyProfile";
+            }
+        }
+
+//		update password
+        if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
+            BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
+            // String dbPassword = currentUser.getPassword();
+            // if(passwordEncoder.matches(user.getPassword(), dbPassword)){
+            currentUser.setPassword(passwordEncoder.encode(newPassword));
+            // } else {
+            //  model.addAttribute("incorrectPassword", true);
+
+            //   return "MyProfile";
+            // }
+        }
+
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setUsername(user.getUsername());
+        currentUser.setEmail(user.getEmail());
+
+        userService.save(currentUser);
+
+        model.addAttribute("updateSuccess", true);
+        model.addAttribute("user", currentUser);
+        model.addAttribute("classActiveEdit", true);
+
+        model.addAttribute("listOfShippingAddresses", true);
+        model.addAttribute("listOfCreditCards", true);
+
+        UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        model.addAttribute("orderList", user.getOrderList());
+
+        return "MyProfile";
+    }
+
 
 
     @RequestMapping(value = "/setDefaultPayment", method = RequestMethod.POST)
