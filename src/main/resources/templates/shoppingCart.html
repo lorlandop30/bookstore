@@ -80,11 +80,11 @@
 
         <div class="row mt-4">
             <div th:if="${notEnoughStock}" class="alert alert-warning">
-                Oops, some of the products don't have enough stock. Please update
-                product quantity.</div>
+                                    Oops, some of the products don't have enough stock. Please update
+                                    product quantity.</div>
             <div th:if="${emptyCart}" class="alert alert-warning">Oops,
-                your cart is empty. See if you can find what you like in the
-                bookshelf and add them to cart.</div>
+                                    your cart is empty. See if you can find what you like in the
+                                    bookshelf and add them to cart.</div>
         </div>
 
         <div class="row border-bottom">
@@ -99,47 +99,47 @@
             </div>
         </div>
 
-        <!--**************** display products in cart ****************-->
+                        <!--**************** display products in cart ****************-->
 
         <form th:action="@{/shoppingCart/updateCartItem}" method="post">
             <div class="row mt-3" th:each="cartItem : ${cartItemList}">
 
-                <div class="col col-sm-2 p-0">
-                    <a th:href="@{bookDetail(id=${cartItem.book.id})}"><img
-                            class="img-responsive shelf-book center-block"
-                            style="width: 6rem;"
-                            th:src="@{/img/books/}+${cartItem.book.id}+'.png'" />
-                    </a>
-                </div>
+            <div class="col col-sm-2 p-0">
+                <a th:href="@{bookDetail(id=${cartItem.book.id})}"><img
+                        class="img-responsive shelf-book center-block"
+                        style="width: 6rem;"
+                        th:src="@{/img/books/}+${cartItem.book.id}+'.png'" />
+                </a>
+            </div>
 
-                <div class="col col-sm-6 p-0">
-                    <div>
-                        <a th:href="@{/bookDetail?id=}+${cartItem.book.id}"><h4 style="color: #1f2123" th:text="${cartItem.book.title}"></h4></a>
-                        <p th:if="${cartItem.book.inStockNumber&gt;10}">In Stock</p>
-                        <p
-                                th:if="${cartItem.book.inStockNumber&lt;10 and cartItem.book.inStockNumber&gt;0}">
-                            Only <span th:text="${cartItem.book.inStockNumber}"></span> In
-                            Stock
-                        </p>
-                        <p th:if="${cartItem.book.inStockNumber==0}">Product Unavailable</p>
-                        <a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">delete</a>
-                    </div>
+            <div class="col col-sm-6 p-0">
+                <div>
+                    <a th:href="@{/bookDetail?id=}+${cartItem.book.id}"><h4 style="color: #1f2123" th:text="${cartItem.book.title}"></h4></a>
+                    <p th:if="${cartItem.book.inStockNumber&gt;10}">In Stock</p>
+                    <p
+                            th:if="${cartItem.book.inStockNumber&lt;10 and cartItem.book.inStockNumber&gt;0}">
+                        Only <span th:text="${cartItem.book.inStockNumber}"></span> In
+                        Stock
+                    </p>
+                    <p th:if="${cartItem.book.inStockNumber==0}">Product Unavailable</p>
+                    <a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">delete</a>
                 </div>
+            </div>
 
-                <div class="col col-sm-2 p-0">
-                    <h5 style="color: #db3208; font-size: large;">
-                        $<span th:text="${cartItem.book.ourPrice}"
-                               th:style="${cartItem.book.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
-                    </h5>
-                </div>
+            <div class="col col-sm-2 p-0">
+                <h5 style="color: #db3208; font-size: large;">
+                    $<span th:text="${cartItem.book.ourPrice}"
+                           th:style="${cartItem.book.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+                </h5>
+            </div>
 
-                <div class="col col-sm-2 p-0">
-                    <input hidden="hidden" name="id" th:value="${cartItem.id}" /> <input
-                        th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.book.inStockNumber==0}" class="form-control cartItemQty" th:value="${cartItem.qty}" />
-                    <button style="display: none;"
-                            th:id="'update-item-'+${cartItem.id}" type="submit"
-                            class="btn btn-warning btn-xs">Update</button>
-                </div>
+            <div class="col col-sm-2 p-0">
+                <input hidden="hidden" name="id" th:value="${cartItem.id}" /> <input
+                    th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.book.inStockNumber==0}" class="form-control cartItemQty" th:value="${cartItem.qty}" />
+                <button style="display: none;"
+                        th:id="'update-item-'+${cartItem.id}" type="submit"
+                        class="btn btn-warning btn-xs">Update</button>
+            </div>
 
             </div>
         </form>

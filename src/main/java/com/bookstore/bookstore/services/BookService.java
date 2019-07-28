@@ -26,6 +26,8 @@ public interface BookService {
     List<Book> findByTopsellerOrderByRatingDesc(Boolean topseller);
     List<Book> findByTopsellerOrderByPriceAsc(Boolean topseller);
     List<Book> findByTitle(String title);
+    List<Book> findByAuthor(String author);
+
 
     double getAverageRating (Long id);
     int getNumberOfReviews (Long id);

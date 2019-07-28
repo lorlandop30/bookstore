@@ -116,7 +116,7 @@ COMMON NAVBAR
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Comments</label>
                 <textarea th:name="comment" th:value="${comment}"
-                          class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                          class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="200"></textarea>
             </div>
             <input type="radio" value="true"  name="showName" class="nameChoice" checked/> Show nickname
             <input type="radio" value="false"  name="showName" class="nameChoice"  /> Remain anonymous

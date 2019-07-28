@@ -84,7 +84,16 @@
                         <div class="row">
                             <div class="col col-sm-4">
                                 <a th:href="@{/bookshelf}">Back to book list</a><br/>
-                                <img class=" img-fluid img-responsive shelf-book" th:src="@{/img/books/}+${book.id}+'.png'" />
+
+                                <!-- Trigger the Modal -->
+                                <img class=" img-fluid img-responsive shelf-book" id="myImg" th:src="@{/img/books/}+${book.id}+'.png'" alt="Snow" style="width:100%;max-width:300px">
+
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                    <!-- The Close Button -->
+                                    <span class="close">&times;</span>
+                                    <!-- Modal Content (The Image) --><img class="modal-content" id="img01">
+                                </div>
                             </div>
                             <div class="col col-sm-8">
                                 <div class="row justify-content-center" id="bookTitle">
@@ -92,7 +101,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col col-sm-6">
-                                        <h5><strong>Author: </strong><span th:text="${book.author}"></span></h5>
+                                        <a th:href="@{/bookauthorList?author=}+${book.author}"><strong>Author: <span th:text="${book.author}"></span></strong></a>
                                         <p><strong>Publisher: </strong><span th:text="${book.publisher}"></span></p>
                                         <p><strong>Publication Date: </strong><span th:text="${book.publicationdate}"></span></p>
                                         <p><strong>Category: </strong><span th:text="${book.category}"></span></p>
