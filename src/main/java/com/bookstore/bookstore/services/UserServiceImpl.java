@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService{
         this.userShippingRepository=userShippingRepository;
     }
 
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findUserById(id);
+    }
     @Override
     public PasswordResetToken getPasswordResetToken(String token) {
         return passwordResetTokenRepository.findByToken(token);
