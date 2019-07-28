@@ -23,6 +23,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBookById(id);
     }
 
+    @Override
+    public List<Book> findByTitle(String title) {
+        return bookRepository.findByTitle(title);
+    }
 
     @Override
     public List<String> findDistinctCategoryBy(){
