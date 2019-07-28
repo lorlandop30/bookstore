@@ -52,9 +52,6 @@ public class User implements UserDetails {
     private List<Review> userReviewsList;
 
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private ShoppingCart shoppingCart;
-
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;
 

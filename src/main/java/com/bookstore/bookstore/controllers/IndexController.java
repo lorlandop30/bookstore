@@ -309,7 +309,6 @@ public class IndexController {
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
 
-        Book book = bookService.findOne(id)
         List<Order> orders = user.getOrderList();
 
             for (Order order : orders) {
@@ -754,6 +753,39 @@ public class IndexController {
         model.addAttribute("listOfCreditCards", true);
 
         return "MyProfile";
+    }
+
+    @RequestMapping("/searchTitle")
+    public String searchTitle(@RequestParam("title") String title,
+                              @RequestParam(value = "topseller", required = false) Boolean topseller,
+                              @RequestParam(value = "sortColumn", required = false) String sort,
+                              Model model, Principal principal) {
+
+        List<Book> bookList;
+
+        if(title.equalsIgnoreCase("")){
+            bookList = bookService.findAll();
+        } else{
+            bookList = bookService.findByTitle(title);
+        }
+
+        List<String> categoryList = bookService.findDistinctCategoryBy();
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("bookList", bookList);
+        BookshelfForm bf = new BookshelfForm(sort);
+        bf.setTopseller(topseller);
+        model.addAttribute("formobject", bf);
+        List<String> sortColumns = Arrays.asList(new String[]{"title", "author", "date", "rating asc", "rating desc", "price"});
+        model.addAttribute("sortColumns", sortColumns);
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+
+        return "bookshelf";
     }
 
 }
