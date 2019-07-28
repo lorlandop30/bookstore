@@ -53,7 +53,7 @@
                 <ul class="navbar-nav mr-auto"></ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i><span
+                        <a class="nav-link" href="/shoppingCart/cart"><i class="fas fa-shopping-cart"></i><span
                                 class="sr-only">(current)</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
@@ -94,10 +94,9 @@
                                     <div class="col col-sm-6">
                                         <h5><strong>Author: </strong><span th:text="${book.author}"></span></h5>
                                         <p><strong>Publisher: </strong><span th:text="${book.publisher}"></span></p>
-                                        <p><strong>Publication Date: </strong><span th:text="${book.publicationDate}"></span></p>
-                                        <p><strong>Language: </strong><span th:text="${book.language}"></span></p>
+                                        <p><strong>Publication Date: </strong><span th:text="${book.publicationdate}"></span></p>
                                         <p><strong>Category: </strong><span th:text="${book.category}"></span></p>
-                                        <p><strong><span th:text="${book.format}"></span>: </strong><span th:text="${book.numberOfPages}"></span> pages</p>
+                                        <p><span th:text="${book.numberOfPages}"></span> pages</p>
                                         <p><strong>ISBN: </strong><span th:text="${book.isbn}"></span></p>
                                         <p><strong>Shipping Weight: </strong><span th:text="${book.shippingWeight}"></span> ounces</p>
                                     </div>
@@ -116,10 +115,10 @@
                                                         </select>
                                                     </div>
                                                     <div class="col col-sm-6">
-                                                        <h4 th:if="*{book.inStockNumber&gt;10}" style="color: green">In Stock</h4>
+                                                        <h4 th:if="*{book.inStockNumber&gt;10}">In Stock</h4>
                                                         <h4 th:if="*{book.inStockNumber&lt;10 and book.inStockNumber&gt;0}" style="color: green">Only <span th:text="${book.inStockNumber}"> In Stock</span></h4>
                                                         <h4 th:if="*{book.inStockNumber==0}" style="color:darkred;">Unavailable</h4>
-                                                        <button type="submit" class="btn btn-warning">Add to Cart</button>
+                                                        <button type="submit" class="btn btn-dark">Add to Cart</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +174,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col" th:if="${allowToReview}">
                         <div class="jumbotron py-5 ml-1">
                             <a class="btn btn-dark btn-lg reviewbtn" th:href="@{/rating?id=}+${book.id}" role="button">Write a Review</a>
                         </div>

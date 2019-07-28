@@ -166,8 +166,9 @@ nav i{
 /*}*/
 
 #rating_comments button{
-    color: white; !important;
+    color: white;
     border: none;
+    background-color: #1f2123;
 }
 
 .featured_text{

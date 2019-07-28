@@ -7,6 +7,7 @@ import com.bookstore.bookstore.models.User;
 //import com.bookstore.service.UserService;
 
 import com.bookstore.bookstore.services.BookService;
+import com.bookstore.bookstore.services.OrderService;
 import com.bookstore.bookstore.services.ReviewService;
 import com.bookstore.bookstore.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class RatingController {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
+
         }
 
         Book book = bookService.findBookById(id);
@@ -101,6 +103,8 @@ public class RatingController {
         }
 
         model.addAttribute("book", book);
+
+        model.addAttribute("allowToReview", true);
 
         return "bookDetail";
 
